@@ -37,12 +37,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md.md",
+                "file": "角色/长颈鹿.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README.md"
+              "title": "长颈鹿"
             }
           },
           {
@@ -133,7 +133,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md.md",
+                "file": "角色/长颈鹿.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -143,7 +143,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "README.md 的反向链接列表"
+              "title": "长颈鹿 的反向链接列表"
             }
           },
           {
@@ -152,12 +152,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md.md",
+                "file": "角色/长颈鹿.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "README.md 的出链列表"
+              "title": "长颈鹿 的出链列表"
             }
           },
           {
@@ -195,13 +195,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md.md",
+                "file": "角色/长颈鹿.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "README.md 的大纲"
+              "title": "长颈鹿 的大纲"
             }
           },
           {
@@ -233,12 +233,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "17766cb517c260e7",
+  "active": "554ce7b22d81c66b",
   "lastOpenFiles": [
+    "角色/马人.md",
+    "角色/长颈鹿.md",
     "角色/主角 鸦羽人.md",
     "README.md.md",
     "角色/目录.md",
-    "角色/马人.md",
     "assets/images/宣传图海报.jpg",
     "assets/images",
     "assets",
