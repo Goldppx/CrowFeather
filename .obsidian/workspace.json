@@ -23,12 +23,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README.md"
+              "title": "README"
             }
           },
           {
@@ -37,12 +37,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "角色/长颈鹿.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "长颈鹿"
+              "title": "README"
             }
           },
           {
@@ -133,7 +133,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "角色/长颈鹿.md",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -143,7 +143,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "长颈鹿 的反向链接列表"
+              "title": "README 的反向链接列表"
             }
           },
           {
@@ -152,12 +152,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "角色/长颈鹿.md",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "长颈鹿 的出链列表"
+              "title": "README 的出链列表"
             }
           },
           {
@@ -195,13 +195,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "角色/长颈鹿.md",
+                "file": "README.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "长颈鹿 的大纲"
+              "title": "README 的大纲"
             }
           },
           {
@@ -233,13 +233,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "17766cb517c260e7",
+  "active": "554ce7b22d81c66b",
   "lastOpenFiles": [
-    "角色/目录.md",
     "角色/长颈鹿.md",
+    "角色/目录.md",
     "角色/马人.md",
     "角色/主角 鸦羽人.md",
-    "README.md.md",
+    "README.md",
     "assets/images/宣传图海报.jpg",
     "assets/images",
     "assets",
