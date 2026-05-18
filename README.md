@@ -1,6 +1,6 @@
 # CrowFeather 鸦羽人
 
-![[宣传图海报.jpg]]
+![[assets/images/宣传图海报.jpg]]
 
 **你只是路过并做出选择
 
