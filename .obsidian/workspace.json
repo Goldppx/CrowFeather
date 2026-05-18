@@ -51,16 +51,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md.md",
+                "file": "剧情/一/序.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README.md"
+              "title": "序"
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -133,7 +133,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md.md",
+                "file": "角色/主角 鸦羽人.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -143,7 +143,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "README.md 的反向链接列表"
+              "title": "主角 鸦羽人 的反向链接列表"
             }
           },
           {
@@ -152,12 +152,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md.md",
+                "file": "角色/主角 鸦羽人.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "README.md 的出链列表"
+              "title": "主角 鸦羽人 的出链列表"
             }
           },
           {
@@ -195,13 +195,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md.md",
+                "file": "角色/主角 鸦羽人.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "README.md 的大纲"
+              "title": "主角 鸦羽人 的大纲"
             }
           },
           {
@@ -233,12 +233,12 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "09176a7045bf61c7",
+  "active": "17766cb517c260e7",
   "lastOpenFiles": [
-    "角色/目录.md",
-    "角色/主角 鸦羽人.md",
     "剧情/一/序.md",
     "README.md.md",
+    "角色/目录.md",
+    "角色/主角 鸦羽人.md",
     "剧情/一",
     "物品文本",
     "剧情",
