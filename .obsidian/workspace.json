@@ -37,12 +37,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
-                "mode": "preview",
+                "file": "物品文本/锈枪.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "锈枪"
             }
           },
           {
@@ -235,15 +235,16 @@
   },
   "active": "17766cb517c260e7",
   "lastOpenFiles": [
-    "角色/马人.md",
+    "角色/主角 鸦羽人.md",
+    "物品文本/锈枪.md",
+    "剧情/一/序.md",
+    "assets/images/宣传图海报.jpg",
     "README.md",
+    "角色/马人.md",
     "角色/长颈鹿.md",
     "角色/目录.md",
-    "角色/主角 鸦羽人.md",
-    "assets/images/宣传图海报.jpg",
     "assets/images",
     "assets",
-    "剧情/一/序.md",
     "剧情/一",
     "物品文本",
     "剧情",
