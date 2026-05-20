@@ -34,7 +34,7 @@ func _unhandled_input(event):
 		camera.rotation.x = pitch
 
 func _process(delta: float) -> void:
-	var target_fov = 90.0 if (player.run_pressed and ) else 75.0
+	var target_fov = 90.0 if (player.run_pressed and state.current_state is PlayerMoveState) else 75.0
 	camera.fov = lerp(camera.fov, target_fov, height_speed * delta)
 	var target_height = crouch_height if player.crouch_pressed else normal_height
 	position.y = lerp(position.y, target_height, height_speed * delta)

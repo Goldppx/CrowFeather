@@ -224,6 +224,8 @@
   },
   "active": "d51ce6f0423a335b",
   "lastOpenFiles": [
+    "godot-game/crow-feather/scenes/player/player.tscn-oF4x5r",
+    "godot-game/crow-feather/scenes/player/player.tscn-GggnsH",
     "godot-game/crow-feather/scenes/player/player.tscn-jd6RlO",
     "godot-game/crow-feather/scenes/player/player.tscn-WOdZCo",
     "godot-game/crow-feather/scenes/player/player.tscn-5vkOd6",
@@ -244,7 +246,6 @@
     "assets",
     "剧情/一",
     "物品文本",
-    "剧情",
-    "角色"
+    "剧情"
   ]
 }
