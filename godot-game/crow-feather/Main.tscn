@@ -16,6 +16,7 @@ sky_material = SubResource("PhysicalSkyMaterial_fos0i")
 [sub_resource type="Environment" id="Environment_cm0pq"]
 background_mode = 2
 sky = SubResource("Sky_3dxm6")
+ssil_enabled = true
 fog_mode = 1
 fog_sky_affect = 0.8
 volumetric_fog_density = 0.0259
@@ -34,9 +35,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4754415, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=999682627]
 transform = Transform3D(-0.8987941, -0.3358117, -0.2817795, 0, -0.64278764, 0.76604444, -0.43837106, 0.68851626, 0.57773376, 0, 29.630184, 0)
-light_energy = 0.2
+light_energy = 0.3
+light_bake_mode = 1
 shadow_enabled = true
-shadow_opacity = 0.7
+shadow_opacity = 0.8
+shadow_blur = 7.0
 
 [node name="Mountain3" type="MeshInstance3D" parent="." unique_id=2139474558]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.021, 0, -1.878)
