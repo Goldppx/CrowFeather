@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "概念/雾.md",
+                "file": "概念/大略开发方向.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "雾"
+              "title": "大略开发方向"
             }
           },
           {
@@ -224,7 +224,9 @@
   },
   "active": "d51ce6f0423a335b",
   "lastOpenFiles": [
-    "概念/未命名.md",
+    "godot-game/crow-feather/scenes/player/player.tscn-5vkOd6",
+    "概念/头顶的乌鸦.md",
+    "概念/大略开发方向.md",
     "概念/雾.md",
     "剧情/一/序.md",
     "概念",

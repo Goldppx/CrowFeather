@@ -6,8 +6,13 @@ func enter(p: PlayerController):
 	print("Entered Move")
 
 func physics_update(delta):
+	var speed_scale := 1.0
 	player.apply_gravity(delta)
-	var speed_scale := player.run_multiplier if player.run_pressed else 1.0
+	if player.crouch_pressed:
+		speed_scale = player.crouch_multiplier
+		
+	elif player.run_pressed:
+		speed_scale = player.run_multiplier 
 	player.move_horizontally(delta, speed_scale)
 
 	if player.move_input.length() <= 0.1:

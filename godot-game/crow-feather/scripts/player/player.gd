@@ -9,10 +9,12 @@ class_name PlayerController
 var move_input := Vector2.ZERO
 var jump_pressed := false
 var run_pressed := false
+var crouch_pressed := false
 
 # Movement
 var speed := 6.0
 var run_multiplier := 2.0
+var crouch_multiplier := 0.5
 var accel := 40.0
 var decel := 18.0
 var jump_force := 8.0
@@ -55,6 +57,7 @@ func process_input():
 
 	jump_pressed = Input.is_action_just_pressed("JUMP")
 	run_pressed = Input.is_action_pressed("RUN")
+	crouch_pressed = Input.is_action_pressed("CROUCH")
 
 func apply_gravity(delta: float) -> void:
 	if not is_on_floor():

@@ -49,3 +49,4 @@ script = ExtResource("7_0owmy")
 
 [node name="InventroyUI" parent="HUD" unique_id=1550233209 instance=ExtResource("8_yumuo")]
 unique_name_in_owner = true
+layout_mode = 3
