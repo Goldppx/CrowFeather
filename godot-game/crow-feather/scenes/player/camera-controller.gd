@@ -43,6 +43,7 @@ func _process(delta: float) -> void:
 
 	# 晕影：蹲下时加深
 	var target_vignette = vignette_max_alpha if player.crouch_pressed else 0.0
-	var c = vignette.color
-	c.a = lerp(c.a, target_vignette, height_speed * delta)
-	vignette.color = c
+	var mat = vignette.material as ShaderMaterial
+	if mat:
+		var current = mat.get_shader_parameter(&"intensity")
+		mat.set_shader_parameter(&"intensity", lerp(current, target_vignette, height_speed * delta))

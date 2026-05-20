@@ -6,14 +6,23 @@
 [ext_resource type="PackedScene" uid="uid://b4h5y7xlhp3uy" path="res://scenes/items/pickup_item.tscn" id="4_q3x5p"]
 [ext_resource type="Resource" uid="uid://dhovfjhj5qb2k" path="res://scenes/items/test_chest_item.tres" id="5_a2b9v"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_r0du0"]
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_fos0i"]
+rayleigh_color = Color(0.085769124, 0.1304729, 0.21702722, 1)
+energy_multiplier = 0.5
 
-[sub_resource type="Sky" id="Sky_r0du0"]
-sky_material = SubResource("ProceduralSkyMaterial_r0du0")
+[sub_resource type="Sky" id="Sky_3dxm6"]
+sky_material = SubResource("PhysicalSkyMaterial_fos0i")
 
 [sub_resource type="Environment" id="Environment_cm0pq"]
 background_mode = 2
-sky = SubResource("Sky_r0du0")
+sky = SubResource("Sky_3dxm6")
+ssao_enabled = true
+fog_mode = 1
+fog_sky_affect = 0.8
+volumetric_fog_density = 0.19
+volumetric_fog_albedo = Color(0.6778343, 0.7075048, 0.7536582, 1)
+volumetric_fog_sky_affect = 0.5
+adjustment_brightness = 0.71
 
 [node name="Main" type="Node" unique_id=659321684]
 

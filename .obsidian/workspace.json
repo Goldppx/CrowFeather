@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "概念/大略开发方向.md",
+                "file": "概念/头顶的乌鸦.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "大略开发方向"
+              "title": "头顶的乌鸦"
             }
           },
           {
@@ -49,7 +49,8 @@
               "title": "序"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -222,23 +223,23 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "d51ce6f0423a335b",
+  "active": "6dfdb54fb7ad3065",
   "lastOpenFiles": [
-    "godot-game/crow-feather/shaders/vignette.gdshader.uid",
-    "godot-game/crow-feather/shaders/vignette.gdshader",
-    "godot-game/crow-feather/shaders",
-    "godot-game/crow-feather/Main.tscn-wcNKDN",
-    "godot-game/crow-feather/Main.tscn-g55hY7",
-    "godot-game/crow-feather/Main.tscn-nDDkbn",
-    "godot-game/crow-feather/Main.tscn-e3kQ1r",
-    "godot-game/crow-feather/Main.tscn-pDjxPz",
-    "godot-game/crow-feather/Main.tscn-irdZuQ",
-    "godot-game/crow-feather/Main.tscn-QQzkQi",
-    "godot-game/crow-feather/project.godot-kG99Pm",
+    "godot-game/crow-feather/Main.tscn-DNJFGq",
+    "godot-game/crow-feather/Main.tscn-XX1xit",
+    "godot-game/crow-feather/Main.tscn-dotpBM",
+    "godot-game/crow-feather/Main.tscn-2Woy2k",
+    "godot-game/crow-feather/Main.tscn-ZqzvOB",
+    "godot-game/crow-feather/Main.tscn-3wjjnN",
+    "godot-game/crow-feather/Main.tscn-TkNPtN",
+    "godot-game/crow-feather/Main.tscn-73CYhO",
+    "godot-game/crow-feather/Main.tscn-xvZOgN",
+    "godot-game/crow-feather/Main.tscn-EGCHyS",
+    "godot-game/crow-feather/Main.tscn-qqzpOg",
+    "剧情/一/序.md",
     "概念/头顶的乌鸦.md",
     "概念/大略开发方向.md",
     "概念/雾.md",
-    "剧情/一/序.md",
     "物品文本/精装盒子.md",
     "README.md",
     "物品文本/锈枪.md",

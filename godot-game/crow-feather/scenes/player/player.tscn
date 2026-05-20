@@ -8,10 +8,16 @@
 [ext_resource type="Script" uid="uid://i7bekiguf6kl" path="res://scripts/player/states/jump.gd" id="6_75vfm"]
 [ext_resource type="Script" uid="uid://b2trfqlvd4taf" path="res://scripts/player/states/fall.gd" id="7_0owmy"]
 [ext_resource type="PackedScene" uid="uid://b23rxd5csmtgf" path="res://scenes/inventroy/Inventroy.tscn" id="8_yumuo"]
+[ext_resource type="Shader" uid="uid://cuvjc3msyhwor" path="res://shaders/vignette.gdshader" id="9_xyflp"]
 
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dovo2"]
 height = 1.7
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8f2a1"]
+render_priority = 0
+shader = ExtResource("9_xyflp")
+shader_parameter/intensity = 0.0
 
 [node name="PlayerController" type="CharacterBody3D" unique_id=1935413381]
 script = ExtResource("1_gmlin")
@@ -62,7 +68,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 0)
+material = SubResource("ShaderMaterial_8f2a1")
+color = Color(1, 1, 1, 1)
 
 [node name="InteractLabel" type="Label" parent="HUD" unique_id=634218193]
 unique_name_in_owner = true
