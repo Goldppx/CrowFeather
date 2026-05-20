@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "剧情/一/序.md",
+                "file": "概念/雾.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "序"
+              "title": "雾"
             }
           },
           {
@@ -222,11 +222,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "554ce7b22d81c66b",
+  "active": "d51ce6f0423a335b",
   "lastOpenFiles": [
+    "剧情/一/序.md",
+    "概念/雾.md",
+    "概念",
     "物品文本/精装盒子.md",
     "README.md",
-    "剧情/一/序.md",
     "物品文本/锈枪.md",
     "角色/主角 鸦羽人.md",
     "assets/images/宣传图海报.jpg",
