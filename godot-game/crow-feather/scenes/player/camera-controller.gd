@@ -8,6 +8,10 @@ class_name CameraController
 var yaw := 0.0
 var pitch := 0.0
 
+@export var normal_height: float = 1.7      # 站立时高度                                                                                                                                                   
+@export var crouch_height: float = 1.0      # 蹲下时高度                                                                                                                                                   
+@export var height_speed: float = 10.0      # 过渡速度
+
 @onready var camera: Camera3D = %Camera3D
 @onready var player: PlayerController = get_parent()
 

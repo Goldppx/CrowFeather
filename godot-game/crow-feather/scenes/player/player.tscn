@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://b23rxd5csmtgf" path="res://scenes/inventroy/Inventroy.tscn" id="8_yumuo"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dovo2"]
+height = 1.7
 
 [node name="PlayerController" type="CharacterBody3D" unique_id=1935413381]
 script = ExtResource("1_gmlin")

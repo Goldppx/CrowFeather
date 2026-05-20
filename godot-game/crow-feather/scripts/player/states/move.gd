@@ -9,8 +9,7 @@ func physics_update(delta):
 	var speed_scale := 1.0
 	player.apply_gravity(delta)
 	if player.crouch_pressed:
-		speed_scale = player.crouch_multiplier
-		
+		speed_scale = player.crouch_multiplier	
 	elif player.run_pressed:
 		speed_scale = player.run_multiplier 
 	player.move_horizontally(delta, speed_scale)
