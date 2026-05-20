@@ -5,8 +5,10 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_q0fx8"]
 size = Vector3(100, 1, 100)
 
-[sub_resource type="BoxMesh" id="BoxMesh_q0fx8"]
-size = Vector3(100, 1, 100)
+[sub_resource type="CylinderMesh" id="CylinderMesh_q0fx8"]
+top_radius = 50.0
+bottom_radius = 50.0
+height = 1.0
 
 [node name="Map" type="Node" unique_id=1325679273]
 
@@ -19,4 +21,4 @@ shape = SubResource("BoxShape3D_q0fx8")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=349097693]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-mesh = SubResource("BoxMesh_q0fx8")
+mesh = SubResource("CylinderMesh_q0fx8")
