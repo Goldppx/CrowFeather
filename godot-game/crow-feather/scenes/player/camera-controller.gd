@@ -14,6 +14,9 @@ var pitch := 0.0
 
 @onready var camera: Camera3D = %Camera3D
 @onready var player: PlayerController = get_parent()
+@onready var vignette: ColorRect = %Vignette
+
+@export var vignette_max_alpha: float = 0.5
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -37,3 +40,9 @@ func _process(delta: float) -> void:
 	camera.fov = lerp(camera.fov, target_fov, height_speed * delta)
 	var target_height = crouch_height if player.crouch_pressed else normal_height
 	position.y = lerp(position.y, target_height, height_speed * delta)
+
+	# 晕影：蹲下时加深
+	var target_vignette = vignette_max_alpha if player.crouch_pressed else 0.0
+	var c = vignette.color
+	c.a = lerp(c.a, target_vignette, height_speed * delta)
+	vignette.color = c

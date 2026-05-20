@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://b2trfqlvd4taf" path="res://scripts/player/states/fall.gd" id="7_0owmy"]
 [ext_resource type="PackedScene" uid="uid://b23rxd5csmtgf" path="res://scenes/inventroy/Inventroy.tscn" id="8_yumuo"]
 
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dovo2"]
 height = 1.7
 
@@ -51,6 +52,17 @@ script = ExtResource("7_0owmy")
 [node name="InventroyUI" parent="HUD" unique_id=1550233209 instance=ExtResource("8_yumuo")]
 unique_name_in_owner = true
 layout_mode = 3
+
+[node name="Vignette" type="ColorRect" parent="HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
 
 [node name="InteractLabel" type="Label" parent="HUD" unique_id=634218193]
 unique_name_in_owner = true
