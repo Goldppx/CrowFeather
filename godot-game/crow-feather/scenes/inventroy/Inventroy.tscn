@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://b23rxd5csmtgf"]
+
+[ext_resource type="Script" uid="uid://cd0ls74wauqhy" path="res://scripts/ui/InventroyUI.gd" id="1_jqy66"]
+[ext_resource type="PackedScene" uid="uid://t57fgus5b06a" path="res://scenes/inventroy/InventoryItem.tscn" id="2_ohdp7"]
+
+[node name="InventroyUI" type="Control"]
+layout_mode = 1
+anchor_left = 0.1
+anchor_right = 0.9
+offset_top = 20.0
+offset_bottom = 150.0
+grow_horizontal = 2
+mouse_filter = 2
+script = ExtResource("1_jqy66")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5)

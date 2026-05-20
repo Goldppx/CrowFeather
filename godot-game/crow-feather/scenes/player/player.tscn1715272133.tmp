@@ -1,0 +1,49 @@
+[gd_scene load_steps=10 format=3 uid="uid://byaa5tvld7eel"]
+
+[ext_resource type="Script" uid="uid://c5413hsrx1ekc" path="res://scripts/player/player.gd" id="1_gmlin"]
+[ext_resource type="Script" uid="uid://d2of7nhts8m8w" path="res://scripts/statemachine.gd" id="2_lvxji"]
+[ext_resource type="Script" uid="uid://b63v4gef2dd1i" path="res://scenes/player/camera-controller.gd" id="2_qek5x"]
+[ext_resource type="Script" uid="uid://cip84sx1sd1q8" path="res://scripts/player/states/idle.gd" id="3_p47bc"]
+[ext_resource type="PackedScene" uid="uid://bc4i216jk6nh8" path="res://scenes/weapons/ak12/akm.tscn" id="4_lvxji"]
+[ext_resource type="Script" uid="uid://c4anjqloh15ra" path="res://scripts/player/states/move.gd" id="5_p47bc"]
+[ext_resource type="Script" uid="uid://i7bekiguf6kl" path="res://scripts/player/states/jump.gd" id="6_75vfm"]
+[ext_resource type="Script" uid="uid://b2trfqlvd4taf" path="res://scripts/player/states/fall.gd" id="7_0owmy"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dovo2"]
+
+[node name="PlayerController" type="CharacterBody3D"]
+script = ExtResource("1_gmlin")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_dovo2")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("2_qek5x")
+
+[node name="WeaponHolder" type="Node3D" parent="CameraPivot"]
+unique_name_in_owner = true
+
+[node name="AKM" parent="CameraPivot/WeaponHolder" instance=ExtResource("4_lvxji")]
+unique_name_in_owner = true
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+unique_name_in_owner = true
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("2_lvxji")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("3_p47bc")
+
+[node name="Move" type="Node" parent="StateMachine"]
+script = ExtResource("5_p47bc")
+
+[node name="Jump" type="Node" parent="StateMachine"]
+script = ExtResource("6_75vfm")
+
+[node name="Fall" type="Node" parent="StateMachine"]
+script = ExtResource("7_0owmy")

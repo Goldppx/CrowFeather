@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://dbn0a4inab588"]
+
+[ext_resource type="PackedScene" uid="uid://byaa5tvld7eel" path="res://scenes/player/player.tscn" id="1_uu6xs"]
+[ext_resource type="PackedScene" uid="uid://cyro762s2xp58" path="res://scenes/Map.tscn" id="2_r0du0"]
+[ext_resource type="ArrayMesh" uid="uid://cs1p4talf15wn" path="res://models/modular_terrain_collection/Mountain_3.obj" id="3_r0du0"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_r0du0"]
+
+[sub_resource type="Sky" id="Sky_r0du0"]
+sky_material = SubResource("ProceduralSkyMaterial_r0du0")
+
+[sub_resource type="Environment" id="Environment_cm0pq"]
+background_mode = 2
+sky = SubResource("Sky_r0du0")
+
+[node name="Main" type="Node" unique_id=659321684]
+
+[node name="PlayerController" parent="." unique_id=1935413381 instance=ExtResource("1_uu6xs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4754415, 0)
+
+[node name="Map" parent="." unique_id=1325679273 instance=ExtResource("2_r0du0")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=999682627]
+transform = Transform3D(1, 0, 0, 0, -0.64278764, 0.76604444, 0, -0.76604444, -0.64278764, 0, 29.630184, 0)
+shadow_enabled = true
+
+[node name="Mountain3" type="MeshInstance3D" parent="." unique_id=2139474558]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0205765, -0.5, -1.8780537)
+mesh = ExtResource("3_r0du0")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1027279810]
+environment = SubResource("Environment_cm0pq")

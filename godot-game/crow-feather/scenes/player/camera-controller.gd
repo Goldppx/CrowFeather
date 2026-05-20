@@ -1,0 +1,29 @@
+extends Node3D
+class_name CameraController
+
+@export var sensitivity := 0.005
+@export var min_pitch := deg_to_rad(-80)
+@export var max_pitch := deg_to_rad(80)
+
+var yaw := 0.0
+var pitch := 0.0
+
+@onready var camera: Camera3D = %Camera3D
+@onready var player: PlayerController = get_parent()
+
+func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+func _input(event):
+	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+func _unhandled_input(event):
+	if event is InputEventMouseMotion:
+		var mouse_delta = event.relative
+		yaw -= mouse_delta.x * sensitivity
+		pitch -= mouse_delta.y * sensitivity
+		pitch = clamp(pitch, min_pitch, max_pitch)
+
+		rotation.y = yaw
+		camera.rotation.x = pitch
