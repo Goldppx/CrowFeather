@@ -224,16 +224,21 @@
   },
   "active": "d51ce6f0423a335b",
   "lastOpenFiles": [
+    "godot-game/crow-feather/scripts/items/pickup_item.gd.uid",
+    "godot-game/crow-feather/scripts/items/pickup_item.gd.uid-DFRpi9",
+    "godot-game/crow-feather/scenes/items/models/treasure_chest_model.tscn",
+    "godot-game/crow-feather/scenes/items/models",
+    "godot-game/crow-feather/scenes/items/test_chest_item.tres",
+    "godot-game/crow-feather/scenes/items/pickup_item.tscn",
+    "godot-game/crow-feather/scenes/items",
+    "godot-game/crow-feather/scripts/items/pickup_item.gd",
     "godot-game/crow-feather/scenes/player/player.tscn-oF4x5r",
     "godot-game/crow-feather/scenes/player/player.tscn-GggnsH",
     "godot-game/crow-feather/scenes/player/player.tscn-jd6RlO",
-    "godot-game/crow-feather/scenes/player/player.tscn-WOdZCo",
-    "godot-game/crow-feather/scenes/player/player.tscn-5vkOd6",
     "概念/头顶的乌鸦.md",
     "概念/大略开发方向.md",
     "概念/雾.md",
     "剧情/一/序.md",
-    "概念",
     "物品文本/精装盒子.md",
     "README.md",
     "物品文本/锈枪.md",
@@ -241,11 +246,6 @@
     "assets/images/宣传图海报.jpg",
     "角色/马人.md",
     "角色/长颈鹿.md",
-    "角色/目录.md",
-    "assets/images",
-    "assets",
-    "剧情/一",
-    "物品文本",
-    "剧情"
+    "角色/目录.md"
   ]
 }
