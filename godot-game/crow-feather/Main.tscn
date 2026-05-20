@@ -23,16 +23,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4754415, 0)
 [node name="Map" parent="." unique_id=1325679273 instance=ExtResource("2_r0du0")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=999682627]
-transform = Transform3D(1, 0, 0, 0, -0.64278764, 0.76604444, 0, -0.76604444, -0.64278764, 0, 29.630184, 0)
+transform = Transform3D(-0.8987941, -0.3358117, -0.2817795, 0, -0.64278764, 0.76604444, -0.43837106, 0.68851626, 0.57773376, 0, 29.630184, 0)
 shadow_enabled = true
 
 [node name="Mountain3" type="MeshInstance3D" parent="." unique_id=2139474558]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0205765, -0.5, -1.8780537)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.021, 0, -1.878)
 mesh = ExtResource("3_r0du0")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1027279810]
 environment = SubResource("Environment_cm0pq")
 
 [node name="TestTreasureChest" parent="." unique_id=1283734105 instance=ExtResource("4_q3x5p")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, -2.5)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -2.5)
 item_data = ExtResource("5_a2b9v")

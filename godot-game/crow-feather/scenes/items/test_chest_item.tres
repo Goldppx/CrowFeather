@@ -8,7 +8,6 @@ script = ExtResource("1_8v5db")
 id = "treasure_chest"
 item_name = "宝箱"
 description = "一个古老的宝箱，里面可能装着好东西。"
-icon = null
 stackable = false
 max_stack = 1
 slot_max = 1

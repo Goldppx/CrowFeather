@@ -19,7 +19,7 @@ var crouch_multiplier := 0.5
 var accel := 40.0
 var decel := 18.0
 var jump_force := 8.0
-var interact_distance := 2.5
+var interact_distance := 5
 
 # Gravity
 const GRAVITY := -12.0
