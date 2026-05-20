@@ -3,6 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://byaa5tvld7eel" path="res://scenes/player/player.tscn" id="1_uu6xs"]
 [ext_resource type="PackedScene" uid="uid://cyro762s2xp58" path="res://scenes/Map.tscn" id="2_r0du0"]
 [ext_resource type="ArrayMesh" uid="uid://cs1p4talf15wn" path="res://models/modular_terrain_collection/Mountain_3.obj" id="3_r0du0"]
+[ext_resource type="PackedScene" uid="uid://b4h5y7xlhp3uy" path="res://scenes/items/pickup_item.tscn" id="4_q3x5p"]
+[ext_resource type="Resource" uid="uid://dhovfjhj5qb2k" path="res://scenes/items/test_chest_item.tres" id="5_a2b9v"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_r0du0"]
 
@@ -30,3 +32,7 @@ mesh = ExtResource("3_r0du0")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1027279810]
 environment = SubResource("Environment_cm0pq")
+
+[node name="TestTreasureChest" parent="." unique_id=1283734105 instance=ExtResource("4_q3x5p")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, -2.5)
+item_data = ExtResource("5_a2b9v")

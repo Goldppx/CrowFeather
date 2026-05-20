@@ -10,6 +10,7 @@ var move_input := Vector2.ZERO
 var jump_pressed := false
 var run_pressed := false
 var crouch_pressed := false
+var use_pressed := false
 
 # Movement
 var speed := 6.0
@@ -18,6 +19,7 @@ var crouch_multiplier := 0.5
 var accel := 40.0
 var decel := 18.0
 var jump_force := 8.0
+var interact_distance := 2.5
 
 # Gravity
 const GRAVITY := -12.0
@@ -26,6 +28,7 @@ const MAX_FALL_SPEED := -50.0
 # ── 背包系统 ──
 var inventory: Inventory
 @onready var inventory_ui: InventroyUI = %InventroyUI
+@onready var interact_label: Label = %InteractLabel
 
 func _ready():
 	state_machine.initialize(self)
@@ -49,6 +52,11 @@ func _physics_process(delta):
 	state_machine._physics_process(delta)
 	move_and_slide()
 
+	# 交互检测
+	_interact_raycast()
+	if use_pressed:
+		try_interact()
+
 func process_input():
 	move_input = Vector2(
 		Input.get_action_strength("MOVE_RIGHT") - Input.get_action_strength("MOVE_LEFT"),
@@ -58,6 +66,7 @@ func process_input():
 	jump_pressed = Input.is_action_just_pressed("JUMP")
 	run_pressed = Input.is_action_pressed("RUN")
 	crouch_pressed = Input.is_action_pressed("CROUCH")
+	use_pressed = Input.is_action_just_pressed("USE")
 
 func apply_gravity(delta: float) -> void:
 	if not is_on_floor():
@@ -101,6 +110,47 @@ func pickup_item(item_data: InventoryItemData, amount: int = 1) -> bool:
 
 func _on_inventory_changed(index: int):
 	inventory_ui.refresh_slot(index, inventory)
+
+# ── 交互系统 ──
+
+var _focused_item: PickupItem = null
+
+func _interact_raycast():
+	var camera = player_camera
+	var space_state = get_world_3d().direct_space_state
+	var from = camera.global_position
+	var to = from - camera.global_transform.basis.z * interact_distance
+
+	var query = PhysicsRayQueryParameters3D.create(from, to)
+	query.exclude = [self]
+	var result = space_state.intersect_ray(query)
+
+	var new_focus: PickupItem = null
+	if result and result.collider is PickupItem:
+		new_focus = result.collider
+
+	if new_focus != _focused_item:
+		_focused_item = new_focus
+		_update_interact_prompt()
+
+func _update_interact_prompt():
+	if _focused_item:
+		interact_label.text = _focused_item.get_interact_text()
+		interact_label.show()
+	else:
+		interact_label.hide()
+
+func try_interact():
+	if not _focused_item:
+		return
+
+	var item = _focused_item
+	var added = pickup_item(item.item_data, 1)
+	if added:
+		item.queue_free()
+		_focused_item = null
+		_update_interact_prompt()
+		print("拾取了: %s" % item.item_data.item_name)
 
 func _test_fill_inventory():
 	var test_item = InventoryItemData.new()

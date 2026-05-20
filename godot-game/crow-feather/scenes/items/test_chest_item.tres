@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="InventoryItemData" format=3 uid="uid://dhovfjhj5qb2k"]
 
-[ext_resource type="Script" uid="uid://c5413hsrx1ekc" path="res://scripts/items/InventoryItemData.gd" id="1_8v5db"]
+[ext_resource type="Script" uid="uid://dxm8n4bwnk06e" path="res://scripts/items/InventoryItemData.gd" id="1_8v5db"]
 [ext_resource type="PackedScene" uid="uid://byl0m3lwlghnb" path="res://scenes/items/models/treasure_chest_model.tscn" id="3_fj2qa"]
 
 [resource]
