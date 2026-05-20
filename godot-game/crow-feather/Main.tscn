@@ -24,7 +24,7 @@ volumetric_fog_emission_energy = 0.1
 volumetric_fog_gi_inject = 0.0
 volumetric_fog_length = 32.0
 volumetric_fog_detail_spread = 6.0
-volumetric_fog_ambient_inject = 16.0
+volumetric_fog_ambient_inject = 0.2
 adjustment_brightness = 0.71
 
 [node name="Main" type="Node" unique_id=659321684]
@@ -37,6 +37,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4754415, 0)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=999682627]
 transform = Transform3D(-0.8987941, -0.3358117, -0.2817795, 0, -0.64278764, 0.76604444, -0.43837106, 0.68851626, 0.57773376, 0, 29.630184, 0)
 light_energy = 0.3
+light_indirect_energy = 16.0
+light_volumetric_fog_energy = 16.0
 light_bake_mode = 1
 shadow_enabled = true
 shadow_opacity = 0.8
