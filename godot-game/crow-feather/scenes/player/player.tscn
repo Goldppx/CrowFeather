@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://byaa5tvld7eel"]
 
 [ext_resource type="Script" uid="uid://c5413hsrx1ekc" path="res://scripts/player/player.gd" id="1_gmlin"]
+[ext_resource type="PackedScene" uid="uid://dsf3cdrtn8ee2" path="res://models/modular_terrain_collection/Crow.glb" id="2_je7p5"]
 [ext_resource type="Script" uid="uid://d2of7nhts8m8w" path="res://scripts/statemachine.gd" id="2_lvxji"]
 [ext_resource type="Script" uid="uid://b63v4gef2dd1i" path="res://scenes/player/camera-controller.gd" id="2_qek5x"]
 [ext_resource type="PackedScene" uid="uid://2eq0o1psm1ap" path="res://scenes/player/item_holder.tscn" id="3_h17s1"]
@@ -21,7 +22,11 @@ shader_parameter/intensity = 0.0
 [node name="PlayerController" type="CharacterBody3D" unique_id=1935413381]
 script = ExtResource("1_gmlin")
 
+[node name="PlayerModel" parent="." unique_id=129914976 instance=ExtResource("2_je7p5")]
+transform = Transform3D(1.465, 0, 0, 0, 1.465, 0, 0, 0, 1.465, 0, 0, 0)
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2016868337]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
 shape = SubResource("CapsuleShape3D_dovo2")
 
 [node name="CameraPivot" type="Node3D" parent="." unique_id=540924457]
