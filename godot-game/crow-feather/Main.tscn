@@ -5,6 +5,7 @@
 [ext_resource type="ArrayMesh" uid="uid://cs1p4talf15wn" path="res://models/modular_terrain_collection/Mountain_3.obj" id="3_r0du0"]
 [ext_resource type="PackedScene" uid="uid://b4h5y7xlhp3uy" path="res://scenes/items/pickup_item.tscn" id="4_q3x5p"]
 [ext_resource type="Resource" uid="uid://dhovfjhj5qb2k" path="res://scenes/items/test_chest_item.tres" id="5_a2b9v"]
+[ext_resource type="PackedScene" uid="uid://dsf3cdrtn8ee2" path="res://models/modular_terrain_collection/Crow.glb" id="6_3dxm6"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_fos0i"]
 rayleigh_color = Color(0.3264166, 0.30545884, 0.5013922, 1)
@@ -29,17 +30,17 @@ volumetric_fog_ambient_inject = 0.2
 adjustment_brightness = 0.71
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fos0i"]
-metallic = 1.0
-roughness = 0.0
+metallic = 0.9
+roughness = 0.08
 
 [sub_resource type="BoxMesh" id="BoxMesh_3dxm6"]
 material = SubResource("StandardMaterial3D_fos0i")
-size = Vector3(4.015, 2.69, 0.2)
+size = Vector3(5.315, 4.455, 0.2)
 
 [node name="Main" type="Node" unique_id=659321684]
 
 [node name="PlayerController" parent="." unique_id=1935413381 instance=ExtResource("1_uu6xs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4754415, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.325789, 1.4754415, 1.6488404)
 
 [node name="Map" parent="." unique_id=1325679273 instance=ExtResource("2_r0du0")]
 
@@ -67,5 +68,8 @@ item_data = ExtResource("5_a2b9v")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44360423, 2.7531366)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1846997330]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3.3133152, 2, -2.4593654)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.47504878, 2, -2.4593654)
 mesh = SubResource("BoxMesh_3dxm6")
+
+[node name="convert" parent="." unique_id=129914976 instance=ExtResource("6_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1668186, 0.18525529, -0.7238002)
