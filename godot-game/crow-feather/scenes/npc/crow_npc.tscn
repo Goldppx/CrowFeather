@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bace5crow8xy0"]
+
+[ext_resource type="Script" uid="uid://bucsqpgy4tgxe" path="res://scripts/npc/npc.gd" id="1_abcde"]
+[ext_resource type="PackedScene" uid="uid://dsf3cdrtn8ee2" path="res://models/Crow.glb" id="2_crow"]
+
+[node name="CrowNPC" type="CharacterBody3D"]
+script = ExtResource("1_abcde")
+collision_height = 0.5
+collision_radius = 0.3
+breath_amplitude = 0.0
+
+[node name="NpcModel" type="Node3D" parent="."]
+
+[node name="CrowMesh" parent="NpcModel" instance=ExtResource("2_crow")]
+scale = Vector3(0.5, 0.5, 0.5)
