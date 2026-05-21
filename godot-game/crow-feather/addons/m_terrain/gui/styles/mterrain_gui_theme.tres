@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=16 format=3 uid="uid://b3bd1lceed8ec"]
+[gd_resource type="Theme" format=3 uid="uid://b3bd1lceed8ec"]
 
 [ext_resource type="StyleBox" uid="uid://b1hcaoigsih7c" path="res://addons/m_terrain/gui/styles/popup_panel_stylebox.tres" id="1_pvcuc"]
 [ext_resource type="StyleBox" uid="uid://b6h5l26dxm8gu" path="res://addons/m_terrain/gui/styles/button_stylebox.tres" id="1_set7o"]

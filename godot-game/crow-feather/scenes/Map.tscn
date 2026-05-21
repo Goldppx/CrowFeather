@@ -6,8 +6,8 @@
 size = Vector3(100, 1, 100)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_q0fx8"]
-top_radius = 50.0
-bottom_radius = 50.0
+top_radius = 100.0
+bottom_radius = 100.0
 height = 1.0
 
 [node name="Map" type="Node" unique_id=1325679273]
