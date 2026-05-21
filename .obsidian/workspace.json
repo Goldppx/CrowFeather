@@ -208,8 +208,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "6dfdb54fb7ad3065",
+  "active": "554ce7b22d81c66b",
   "lastOpenFiles": [
+    "godot-game/crow-feather/scripts/player/model_animator.gd",
     "assets/images/头顶乌鸦盘旋.jpeg",
     "assets/images/修改此图，乌鸦的数量只要有八个就行，不要形成规则图形，要随意的盘旋，尾迹不要太明显_202605211600.jpeg",
     "概念/头顶的乌鸦.md",
@@ -232,7 +233,6 @@
     "角色/长颈鹿.md",
     "角色/马人.md",
     "README.md",
-    "assets/images/743025f6690476014be52a1c32fb7cd3.jpg",
     "剧情/一/序.md",
     "godot-game/crow-feather/addons/m_terrain/icons/sculpt_terrain.svg.import-zBbwKx",
     "godot-game/crow-feather/addons/m_terrain/icons/settings_icon.svg.import-uDfuEz",
