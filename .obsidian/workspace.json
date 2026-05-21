@@ -8,31 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "d51ce6f0423a335b",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "概念/头顶的乌鸦.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "头顶的乌鸦"
-            }
-          },
-          {
             "id": "6dfdb54fb7ad3065",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "概念/头顶的乌鸦.md",
+                "file": "概念/雾.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "头顶的乌鸦"
+              "title": "雾"
             }
           },
           {
@@ -41,16 +27,15 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "剧情/一/序.md",
+                "file": "概念/大略开发方向.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "序"
+              "title": "大略开发方向"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -225,13 +210,16 @@
   },
   "active": "6dfdb54fb7ad3065",
   "lastOpenFiles": [
-    "概念/大略开发方向.md",
-    "概念/雾.md",
     "概念/头顶的乌鸦.md",
     "角色/长颈鹿.md",
     "角色/马人.md",
-    "角色/主角 鸦羽人.md",
     "README.md",
+    "角色/主角 鸦羽人.md",
+    "assets/images/鸦羽人.jpg",
+    "assets/images/743025f6690476014be52a1c32fb7cd3.jpg",
+    "概念/大略开发方向.md",
+    "剧情/一/序.md",
+    "概念/雾.md",
     "godot-game/crow-feather/addons/m_terrain/icons/sculpt_terrain.svg.import-zBbwKx",
     "godot-game/crow-feather/addons/m_terrain/icons/settings_icon.svg.import-uDfuEz",
     "godot-game/crow-feather/mterrain/MTerrain.gdextension.uid",
@@ -250,11 +238,8 @@
     "godot-game/crow-feather/addons/m_terrain/icons/tick_icon.svg",
     "godot-game/crow-feather/addons/m_terrain/icons/terrain_icon.png",
     "godot-game/crow-feather/addons/m_terrain/icons/tag_icon.svg",
-    "godot-game/crow-feather/addons/m_terrain/icons/switch_direction_icon.svg",
-    "godot-game/crow-feather/addons/m_terrain/icons/sort_icon.svg",
     "godot-game/crow-feather/addons/m_terrain/README.md",
     "godot-game/crow-feather/README.md",
-    "剧情/一/序.md",
     "物品文本/精装盒子.md",
     "物品文本/锈枪.md",
     "角色/目录.md"
