@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "概念/雾.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "雾"
             }
           },
           {
@@ -225,6 +225,12 @@
   },
   "active": "6dfdb54fb7ad3065",
   "lastOpenFiles": [
+    "概念/头顶的乌鸦.md",
+    "概念/雾.md",
+    "角色/长颈鹿.md",
+    "角色/马人.md",
+    "角色/主角 鸦羽人.md",
+    "README.md",
     "godot-game/crow-feather/addons/m_terrain/icons/sculpt_terrain.svg.import-zBbwKx",
     "godot-game/crow-feather/addons/m_terrain/icons/settings_icon.svg.import-uDfuEz",
     "godot-game/crow-feather/mterrain/MTerrain.gdextension.uid",
@@ -235,7 +241,6 @@
     "godot-game/crow-feather/mterrain/libMTerrain.macos.template_release.universal.dylib",
     "godot-game/crow-feather/mterrain/libMTerrain.macos.template_release.universal.dylib-oGhRVx",
     "godot-game/crow-feather/mterrain/libMTerrain.macos.template_debug.universal.dylib",
-    "godot-game/crow-feather/mterrain/libMTerrain.macos.template_debug.universal.dylib-RV1hPX",
     "godot-game/crow-feather/addons/m_terrain/icons/walk_icon.svg",
     "godot-game/crow-feather/addons/m_terrain/icons/tsnap_icon_pressed.png",
     "godot-game/crow-feather/addons/m_terrain/icons/tsnap_icon.png",
@@ -249,15 +254,9 @@
     "godot-game/crow-feather/addons/m_terrain/README.md",
     "godot-game/crow-feather/README.md",
     "剧情/一/序.md",
-    "概念/头顶的乌鸦.md",
     "概念/大略开发方向.md",
-    "概念/雾.md",
     "物品文本/精装盒子.md",
-    "README.md",
     "物品文本/锈枪.md",
-    "角色/主角 鸦羽人.md",
-    "角色/马人.md",
-    "角色/长颈鹿.md",
     "角色/目录.md"
   ]
 }
