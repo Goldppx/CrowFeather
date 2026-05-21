@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://d2of7nhts8m8w" path="res://scripts/statemachine.gd" id="2_lvxji"]
 [ext_resource type="Script" uid="uid://b63v4gef2dd1i" path="res://scenes/player/camera-controller.gd" id="2_qek5x"]
 [ext_resource type="PackedScene" uid="uid://2eq0o1psm1ap" path="res://scenes/player/item_holder.tscn" id="3_h17s1"]
-[ext_resource type="Script" uid="uid://d4x3f6qrbxxd" path="res://scripts/player/model_animator.gd" id="4_h17s1"]
 [ext_resource type="Script" uid="uid://cip84sx1sd1q8" path="res://scripts/player/states/idle.gd" id="3_p47bc"]
 [ext_resource type="Script" uid="uid://c4anjqloh15ra" path="res://scripts/player/states/move.gd" id="5_p47bc"]
 [ext_resource type="Script" uid="uid://i7bekiguf6kl" path="res://scripts/player/states/jump.gd" id="6_75vfm"]
@@ -24,15 +23,6 @@ script = ExtResource("1_gmlin")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2016868337]
 shape = SubResource("CapsuleShape3D_dovo2")
-
-[node name="ModelContainer" type="Node3D" parent="." unique_id=2016868338]
-unique_name_in_owner = true
-script = ExtResource("4_h17s1")
-
-[node name="ModelPlaceholder" type="MeshInstance3D" parent="ModelContainer" unique_id=2016868339]
-visible = false
-
-[node name="TestModel" type="MeshInstance3D" parent="ModelContainer" unique_id=2016868340]
 
 [node name="CameraPivot" type="Node3D" parent="." unique_id=540924457]
 unique_name_in_owner = true
