@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b4m3x7npc8abc"]
+
+[ext_resource type="Script" uid="uid://c4p8n3fxy9abc" path="res://scripts/npc/npc.gd" id="1_abcde"]
+
+[node name="NPC" type="CharacterBody3D"]
+script = ExtResource("1_abcde")
+collision_height = 1.7
+collision_radius = 0.4
+
+[node name="NpcModel" type="Node3D" parent="."]
