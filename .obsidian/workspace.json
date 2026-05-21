@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "角色/鸦羽人/主角 鸦羽人.md",
+                "file": "概念/头顶的乌鸦.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "主角 鸦羽人"
+              "title": "头顶的乌鸦"
             }
           },
           {
@@ -208,20 +208,20 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "554ce7b22d81c66b",
+  "active": "6dfdb54fb7ad3065",
   "lastOpenFiles": [
-    "assets/images/物品",
-    "角色/鸦羽人/鸦羽人提着灯，侧45°示意图，背景纯黑色，灯发出白色_202605211543.jpeg",
-    "角色/鸦羽人/小盒与子弹.jpeg",
-    "角色/鸦羽人/锈猎枪.jpeg",
-    "角色/鸦羽人/减少三角面，尽可能使用大面积纯色，不要精细纹理，减少三角面，低多边形_202605211536.jpeg",
-    "角色/鸦羽人/Low_poly_Godot_game_style_202605211536.jpeg",
-    "角色/鸦羽人/提灯.jpeg",
-    "角色/鸦羽人/减少多边形，要非常少的三角面，非常少！！！改成黑色金属外壳_202605211528.jpeg",
-    "角色/鸦羽人/鸦羽人.jpg",
-    "角色/鸦羽人/主角 鸦羽人.md",
+    "assets/images/物品/提灯.jpeg",
     "物品文本/精装盒子.md",
     "物品文本/锈枪.md",
+    "assets/images/物品/锈猎枪.jpeg",
+    "assets/images/物品/小盒与子弹.jpeg",
+    "角色/鸦羽人/鸦羽人提灯示意.jpeg",
+    "角色/鸦羽人/主角 鸦羽人.md",
+    "assets/images/物品",
+    "角色/鸦羽人/减少三角面，尽可能使用大面积纯色，不要精细纹理，减少三角面，低多边形_202605211536.jpeg",
+    "角色/鸦羽人/Low_poly_Godot_game_style_202605211536.jpeg",
+    "角色/鸦羽人/减少多边形，要非常少的三角面，非常少！！！改成黑色金属外壳_202605211528.jpeg",
+    "角色/鸦羽人/鸦羽人.jpg",
     "角色/鸦羽人",
     "概念/大略开发方向.md",
     "概念/尸体.md",
@@ -240,7 +240,6 @@
     "godot-game/crow-feather/mterrain/libMTerrain.windows.template_debug.x86_64.dll",
     "godot-game/crow-feather/mterrain/libMTerrain.windows.template_debug.x86_64.dll-6pt7Z5",
     "godot-game/crow-feather/mterrain/libMTerrain.macos.template_release.universal.dylib",
-    "godot-game/crow-feather/mterrain/libMTerrain.macos.template_release.universal.dylib-oGhRVx",
     "godot-game/crow-feather/addons/m_terrain/icons/walk_icon.svg",
     "godot-game/crow-feather/addons/m_terrain/README.md",
     "godot-game/crow-feather/README.md",
