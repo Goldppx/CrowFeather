@@ -16,6 +16,8 @@ sky_material = SubResource("PhysicalSkyMaterial_fos0i")
 [sub_resource type="Environment" id="Environment_cm0pq"]
 background_mode = 2
 sky = SubResource("Sky_3dxm6")
+ssr_enabled = true
+sdfgi_read_sky_light = false
 fog_sky_affect = 0.8
 volumetric_fog_albedo = Color(0.6778343, 0.7075048, 0.7536582, 1)
 volumetric_fog_emission = Color(1, 1, 1, 1)
@@ -27,7 +29,8 @@ volumetric_fog_ambient_inject = 0.2
 adjustment_brightness = 0.71
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fos0i"]
-roughness = 0.15
+metallic = 1.0
+roughness = 0.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_3dxm6"]
 material = SubResource("StandardMaterial3D_fos0i")
