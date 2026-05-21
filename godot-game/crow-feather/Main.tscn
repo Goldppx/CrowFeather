@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://dbn0a4inab588"]
 
+[ext_resource type="Script" uid="uid://bucsqpgy4tgxe" path="res://scripts/npc/npc.gd" id="1_lgr22"]
 [ext_resource type="PackedScene" uid="uid://byaa5tvld7eel" path="res://scenes/player/player.tscn" id="1_uu6xs"]
 [ext_resource type="PackedScene" uid="uid://cyro762s2xp58" path="res://scenes/Map.tscn" id="2_r0du0"]
 [ext_resource type="ArrayMesh" uid="uid://cs1p4talf15wn" path="res://models/modular_terrain_collection/Mountain_3.obj" id="3_r0du0"]
 [ext_resource type="PackedScene" uid="uid://b4h5y7xlhp3uy" path="res://scenes/items/pickup_item.tscn" id="4_q3x5p"]
 [ext_resource type="Resource" uid="uid://dhovfjhj5qb2k" path="res://scenes/items/test_chest_item.tres" id="5_a2b9v"]
-[ext_resource type="PackedScene" uid="uid://dsf3cdrtn8ee2" path="res://models/modular_terrain_collection/Crow.glb" id="6_3dxm6"]
+[ext_resource type="PackedScene" uid="uid://b4m3x7npc8abc" path="res://scenes/npc/npc.tscn" id="7_lgr22"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_fos0i"]
 rayleigh_color = Color(0.3264166, 0.30545884, 0.5013922, 1)
@@ -38,6 +39,7 @@ material = SubResource("StandardMaterial3D_fos0i")
 size = Vector3(5.315, 4.455, 0.2)
 
 [node name="Main" type="Node" unique_id=659321684]
+script = ExtResource("1_lgr22")
 
 [node name="PlayerController" parent="." unique_id=1935413381 instance=ExtResource("1_uu6xs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.325789, 1.4754415, 1.6488404)
@@ -71,5 +73,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44360423, 2.7531366)
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.47504878, 2, -2.4593654)
 mesh = SubResource("BoxMesh_3dxm6")
 
-[node name="convert" parent="." unique_id=129914976 instance=ExtResource("6_3dxm6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1668186, 0.18525529, -0.7238002)
+[node name="NPC" parent="." unique_id=2077274064 node_paths=PackedStringArray("model") instance=ExtResource("7_lgr22")]
+model = NodePath(".")

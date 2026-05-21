@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://byaa5tvld7eel"]
 
 [ext_resource type="Script" uid="uid://c5413hsrx1ekc" path="res://scripts/player/player.gd" id="1_gmlin"]
-[ext_resource type="PackedScene" uid="uid://dsf3cdrtn8ee2" path="res://models/modular_terrain_collection/Crow.glb" id="2_je7p5"]
+[ext_resource type="PackedScene" uid="uid://dsf3cdrtn8ee2" path="res://models/Crow.glb" id="2_je7p5"]
 [ext_resource type="Script" uid="uid://d2of7nhts8m8w" path="res://scripts/statemachine.gd" id="2_lvxji"]
 [ext_resource type="Script" uid="uid://b63v4gef2dd1i" path="res://scenes/player/camera-controller.gd" id="2_qek5x"]
 [ext_resource type="PackedScene" uid="uid://2eq0o1psm1ap" path="res://scenes/player/item_holder.tscn" id="3_h17s1"]
