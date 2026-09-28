@@ -158,6 +158,24 @@ func run() -> void:
 	check(AudioServer.is_bus_mute(AudioServer.get_bus_index("BGM")),"BGM mute actually affects bus")
 	world.settings.set_value("sfx",0.0,false)
 	check(AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX")),"SFX mute actually affects bus")
+	check(float(world.atmosphere.get_shader_parameter("rain_amount"))==0.0,"reduced motion hides rain")
+	var bank = load("res://scripts/pixel/art_bank.gd")
+	for id in ["player","deer","horse","pig","sheep","chicken"]:
+		for direction in range(4):
+			for pose in range(4):
+				var tex: Texture2D=bank.direction_texture(id,direction,pose)
+				check(tex!=null and tex.get_height()<=28 and not tex.get_image().get_used_rect().size==Vector2i.ZERO,"valid low-pixel directional sprite")
+		for pose in range(3):
+			var tex: Texture2D=bank.memorial_texture(id,pose)
+			check(tex.get_height()<=24,"memorial art uses consistent tiny grid")
+	for option in world.settings.resolutions:
+		check(option.x<=world.settings.native_size.x and option.y<=world.settings.native_size.y,"resolution constrained to device")
+	world.hud.mobile_mode=false
+	world.settings.set_value("ui_scale",1.3,false)
+	world.hud.show_character("deer")
+	await frames(2)
+	var panel: Control=world.hud.modal.get_node("Panel")
+	check(panel.position.x>=0 and panel.position.y>=0 and panel.get_rect().end.x<=world.hud.size.x+1 and panel.get_rect().end.y<=world.hud.size.y+1,"investigation panel remains in viewport at 130 percent")
 	world.queue_free()
 	await process_frame
 	await create_timer(0.15).timeout

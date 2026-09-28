@@ -5,6 +5,7 @@ var state := "idle"
 var visual: Sprite2D
 var clock := 0.0
 var current := -1
+var direction := 0
 var erase_material: ShaderMaterial
 var erasing := false
 var erase_progress := 0.0
@@ -27,6 +28,10 @@ func _ready() -> void:
 	foot_body.add_child(shape)
 	add_child(foot_body)
 
+func face_toward(offset: Vector2) -> void:
+	direction = (1 if offset.x>0 else 3) if absf(offset.x)>absf(offset.y) else (0 if offset.y>=0 else 2)
+	current=-1
+
 func set_state(value: String) -> void:
 	state = value
 	if is_instance_valid(foot_body):
@@ -38,6 +43,7 @@ func set_state(value: String) -> void:
 	if is_instance_valid(visual):
 		visual.modulate = Color.WHITE
 		erase_material.set_shader_parameter("progress",0.0)
+		erase_material.set_shader_parameter("actor_tint",Color(0.60,0.65,0.76,1.0) if value=="tomb" else Color(0.86,0.90,0.96,1.0))
 	queue_redraw()
 
 func _process(delta: float) -> void:
@@ -56,10 +62,15 @@ func _process(delta: float) -> void:
 	erase_material.set_shader_parameter("gentle",reduce_flashes)
 
 func _update_frame(frame: int) -> void:
-	if frame == current:
+	var key := frame+direction*32
+	if key == current:
 		return
-	Bank.apply(visual,actor_id,frame,30.0 if actor_id == "chicken" else 62.0)
-	current = frame
+	var height := 20.0 if actor_id=="chicken" else 36.0
+	if frame<6:
+		Bank.apply_texture(visual,Bank.direction_texture(actor_id,direction,[0,3,1,0,2,0][frame]),height)
+	else:
+		Bank.apply(visual,actor_id,frame,36.0 if frame==7 else height)
+	current = key
 
 func _draw() -> void:
 	draw_set_transform(Vector2.ZERO,0,Vector2(1,0.28))

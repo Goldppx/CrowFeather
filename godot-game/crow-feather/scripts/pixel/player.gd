@@ -18,7 +18,7 @@ func _ready() -> void:
 	visual = Sprite2D.new()
 	visual.name = "Sprite"
 	add_child(visual)
-	Bank.apply(visual, "player", 12, 62.0)
+	Bank.apply_texture(visual,Bank.direction_texture("player",0,0),36.0)
 	var collision := CollisionShape2D.new()
 	var shape := CircleShape2D.new()
 	shape.radius = 6.0
@@ -51,16 +51,14 @@ func _physics_process(delta: float) -> void:
 		animation_time += distance / 46.0 * 4.0
 	else:
 		animation_time = 0
-	var row := 0
-	if absf(facing.x) > absf(facing.y):
-		row = 2
-	elif facing.y < 0:
-		row = 1
-	visual.flip_h = row == 2 and facing.x < 0
-	var frame := row*4 + int(animation_time)%4 if moving else 12+row
-	if investigating:
-		frame = 15
-		visual.flip_h = false
-	if frame != current_frame:
-		Bank.apply(visual,"player",frame,62.0)
-		current_frame = frame
+	var direction_index := 0
+	if absf(facing.x)>absf(facing.y):
+		direction_index=1 if facing.x>0 else 3
+	elif facing.y<0:
+		direction_index=2
+	var pose: int = [0,1,0,2][int(animation_time)%4] if moving else 0
+	if investigating: pose=3
+	var frame := pose*4+direction_index
+	if frame!=current_frame:
+		Bank.apply_texture(visual,Bank.memorial_texture("player",0) if investigating else Bank.direction_texture("player",direction_index,pose),30.0 if investigating else 36.0)
+		current_frame=frame

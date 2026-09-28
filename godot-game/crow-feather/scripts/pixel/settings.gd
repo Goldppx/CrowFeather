@@ -1,12 +1,40 @@
 extends Node
 signal changed
 const DEFAULTS := {"reduce_motion": false, "reduce_flashes": true, "show_hints": true, "ui_scale": 1.0, "bgm": 0.45, "sfx": 0.7, "window_mode": 0, "resolution": 0}
-const RESOLUTIONS := [Vector2i(1280,720), Vector2i(1600,900), Vector2i(1920,1080), Vector2i(960,540)]
+var resolutions: Array[Vector2i] = []
+var display_error := ""
+var native_size := Vector2i(1280,720)
+var display_index := -1
+
+func refresh_resolutions() -> void:
+	resolutions.clear()
+	if DisplayServer.get_name() != "headless":
+		display_index = DisplayServer.window_get_current_screen()
+		native_size = DisplayServer.screen_get_size(display_index)
+	# Window sizes follow the connected screen's aspect and bounds, including its native size.
+	for fraction in [0.5,0.625,0.75,0.875,1.0]:
+		var candidate := Vector2i(roundi(native_size.x*fraction),roundi(native_size.y*fraction))
+		if candidate.x>=640 and candidate.y>=360 and candidate not in resolutions:
+			resolutions.append(candidate)
+	if resolutions.is_empty(): resolutions.append(native_size)
+	values.resolution = clampi(int(values.resolution),0,resolutions.size()-1)
+
+func resolution_labels() -> Array[String]:
+	refresh_resolutions()
+	var result: Array[String] = []
+	for option in resolutions:
+		result.append("%d × %d%s" % [option.x,option.y," · 原生" if option==native_size else ""])
+	return result
+
+func toggle_fullscreen() -> void:
+	set_value("window_mode",2 if int(values.window_mode)==0 else 0)
+
 var values := DEFAULTS.duplicate()
 var path := "user://settings.json"
 
 func _ready() -> void:
 	load_values()
+	refresh_resolutions()
 	for bus in ["BGM", "SFX"]:
 		if AudioServer.get_bus_index(bus) < 0:
 			AudioServer.add_bus()
@@ -30,7 +58,7 @@ func load_values() -> void:
 	values.bgm = clampf(float(values.bgm), 0.0, 1.0)
 	values.sfx = clampf(float(values.sfx), 0.0, 1.0)
 	values.window_mode = clampi(int(values.window_mode), 0, 2)
-	values.resolution = clampi(int(values.resolution), 0, RESOLUTIONS.size()-1)
+	values.resolution = maxi(0,int(values.resolution))
 
 func set_value(key: String, value: Variant, persist := true) -> void:
 	if not DEFAULTS.has(key):
@@ -50,10 +78,24 @@ func apply(display := false) -> void:
 			var volume := float(values[entry[1]])
 			AudioServer.set_bus_mute(index, volume <= 0.001)
 			AudioServer.set_bus_volume_db(index, linear_to_db(maxf(volume, 0.0001)))
-	if display and not OS.has_feature("mobile") and DisplayServer.get_name() != "headless":
-		var modes := [DisplayServer.WINDOW_MODE_WINDOWED, DisplayServer.WINDOW_MODE_FULLSCREEN, DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN]
-		DisplayServer.window_set_mode(modes[int(values.window_mode)])
-		if int(values.window_mode) == 0:
-			DisplayServer.window_set_size(RESOLUTIONS[int(values.resolution)])
-			var usable := DisplayServer.screen_get_usable_rect()
-			DisplayServer.window_set_position(usable.position + (usable.size - DisplayServer.window_get_size()) / 2)
+	if display:
+		apply_display()
+
+func apply_display() -> void:
+	display_error = ""
+	if OS.has_feature("mobile") or DisplayServer.get_name()=="headless": return
+	if "--wid" in OS.get_cmdline_args():
+		display_error = "显示模式需在独立游戏窗口中调整。"
+		return
+	var window := get_window()
+	var selected_screen := DisplayServer.window_get_current_screen()
+	if selected_screen != display_index: refresh_resolutions()
+	var modes := [Window.MODE_WINDOWED,Window.MODE_FULLSCREEN,Window.MODE_EXCLUSIVE_FULLSCREEN]
+	window.mode = modes[int(values.window_mode)]
+	if int(values.window_mode)==0:
+		window.borderless = false
+		window.size = resolutions[clampi(int(values.resolution),0,resolutions.size()-1)]
+		var usable := DisplayServer.screen_get_usable_rect(selected_screen)
+		window.position = usable.position+(usable.size-window.size)/2
+	if DisplayServer.window_get_mode()!=modes[int(values.window_mode)]:
+		display_error = "当前窗口没有切换成功，请用 F11 重试。"

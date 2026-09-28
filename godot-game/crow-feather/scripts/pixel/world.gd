@@ -21,6 +21,7 @@ var nearest_pickup: Node2D
 var items: Dictionary = {}
 var elapsed := 0.0
 var fog_clock := 0.0
+var weather := "rain"
 var settings
 var sounds
 var saves = SaveStore.new()
@@ -63,8 +64,11 @@ func _ready() -> void:
 	add_child(actors)
 	_build_props()
 	_build_water()
-	if ResourceLoader.exists("res://art/characters/menu.png"):
-		menu_background = load("res://art/characters/menu.png")
+	if ResourceLoader.exists("res://art/characters/menu-v2.png"):
+		var backdrop: Texture2D = load("res://art/characters/menu-v2.png")
+		var small := backdrop.get_image()
+		small.resize(480,270,Image.INTERPOLATE_NEAREST)
+		menu_background = ImageTexture.create_from_image(small)
 	player = Player.new()
 	actors.add_child(player)
 	camera = Camera2D.new()
@@ -151,10 +155,10 @@ func enter_menu(save_first := true) -> void:
 	ritual_actor = ""
 	_clear_pickups()
 	inventory.clear()
-	player.position = Vector2(480,414)
+	player.position = Vector2(465,510)
 	_refresh_room()
 	hud.close_modal()
-	hud.notify("走近一座墓碑，开始或继续它记录的旅程。")
+	hud.notice_time = 0
 
 func open_slot(id: int) -> void:
 	var data: Dictionary = saves.read_slot(id)
@@ -254,7 +258,8 @@ func _refresh_room() -> void:
 	for pickup in pickups:
 		pickup.visible = mode != "menu" and (mode == "dev" or pickup.get_meta("region") == region)
 	if is_instance_valid(crows):
-		crows.target = Vector2(480,245) if mode == "menu" else Vector2(493,288)
+		crows.target = Vector2(350,205) if mode == "menu" else Vector2(493,288)
+		crows.visible = mode != "menu"
 	_apply_settings()
 	queue_redraw()
 	if is_instance_valid(hud):
@@ -275,7 +280,11 @@ func travel(id: String) -> void:
 func _process(delta: float) -> void:
 	elapsed += delta
 	if mode == "menu":
-		player.position = player.position.clamp(Vector2(170,320),Vector2(795,545))
+		var view_size := get_viewport_rect().size
+		var origin := Vector2(480,335)-view_size/2
+		for i in range(3):
+			graves[i].position = origin+view_size*[Vector2(0.438,0.635),Vector2(0.65,0.693),Vector2(0.785,0.58)][i]
+		player.position = player.position.clamp(origin+view_size*Vector2(0.15,0.57),origin+view_size*Vector2(0.87,0.93))
 	if not settings.values.reduce_motion:
 		fog_clock += delta
 	if mode == "game":
@@ -297,10 +306,11 @@ func _process(delta: float) -> void:
 	var palette: Dictionary = Story.REGIONS[region]
 	var erased := float(session.story.erased)
 	var distortion := float(session.story.distortion)
-	var target_fog: Color = palette.fog.lerp(Color("d8d7cf"),clampf(erased/5.0,0.0,1.0)*0.75)
+	var target_fog: Color = (Color("585983") if mode=="menu" else palette.fog).lerp(Color("d8d7cf"),clampf(erased/5.0,0.0,1.0)*0.75)
 	var fog_now = atmosphere.get_shader_parameter("fog_color")
 	atmosphere.set_shader_parameter("fog_color",Color(fog_now).lerp(target_fog,minf(1,delta*0.8)) if fog_now != null else target_fog)
-	atmosphere.set_shader_parameter("fog_strength",0.16+distortion*0.018)
+	atmosphere.set_shader_parameter("fog_strength",(0.08 if weather=="clear" else (0.30 if weather in ["fog","storm"] else 0.14))+distortion*0.018)
+	atmosphere.set_shader_parameter("rain_amount",0.0 if weather in ["clear","fog"] or settings.values.reduce_motion else (0.9 if weather=="storm" else 0.4))
 	atmosphere.set_shader_parameter("motion_clock",fog_clock)
 	get_node("Water").material.set_shader_parameter("motion_clock",fog_clock)
 	atmosphere.set_shader_parameter("gentle",settings.values.reduce_flashes)
@@ -524,6 +534,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key: int = event.physical_keycode if event.physical_keycode else event.keycode
 		match key:
+			KEY_F11: settings.toggle_fullscreen()
 			KEY_ESCAPE:
 				if hud.modal_open():
 					hud.close_modal()
