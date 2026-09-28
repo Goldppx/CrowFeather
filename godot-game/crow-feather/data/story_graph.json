@@ -1,0 +1,11 @@
+{
+  "arrival": {"title":"第一夜 · 来信", "text":"马人：哥们，你知道今天有人死了吗？\n鸦羽人：交给我吧。\n乌鸦指向苔庭。", "edges":[{"to":"deer_mourning"}]},
+  "deer_mourning": {"title":"苔庭的名字", "text":"调查鹿头人的遗物。裁决会改变这片庭院留下的痕迹。", "edges":[{"to":"empty_garden","flag":"deer_erased","equals":true},{"to":"remembered_garden","flag":"deer_existed","equals":true}]},
+  "empty_garden": {"title":"无名庭院", "text":"锁坠与庭院的名牌消失了。没有人记得是谁在这里等候。", "edges":[{"to":"crossroads"}]},
+  "remembered_garden": {"title":"留名", "text":"名牌仍在。名字被保留下来，故事也保留了伤口。", "edges":[{"to":"crossroads"}]},
+  "crossroads": {"title":"歧路", "text":"道路开始分岔。信使是否曾经存在，会改变下一段线索。", "edges":[{"to":"letters","flag":"mail_route","equals":true},{"to":"silence","flag":"mail_route","equals":false}]},
+  "letters": {"title":"尚有来信", "text":"旧信箱仍然存在。那些没有送达的名字，在纸上相遇。", "edges":[{"to":"bell_return"}]},
+  "silence": {"title":"没有寄信人的镇子", "text":"信箱原本所在的位置，只剩雨水。你从钟坡拾起另一条线索。", "edges":[{"to":"bell_return"}]},
+  "bell_return": {"title":"回归 · 钟坡", "text":"两条道路在钟坡重新汇合；此前的裁决继续保留。\n完成五处调查，乌鸦将带你走向自己的影子。", "edges":[{"to":"self","flag":"all_judged","equals":true}]},
+  "self": {"title":"自己的实体", "text":"雾中站着另一个鸦羽人。那些被保留或抹去的名字，决定你还能否找到自己的锚点。", "edges":[]}
+}

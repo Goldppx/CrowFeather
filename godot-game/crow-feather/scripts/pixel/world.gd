@@ -1,27 +1,61 @@
-extends Node2D
-## Orthographic ground plane with upright sprites, foot collisions and Y sorting.
-const Art = preload("res://scripts/pixel/art.gd")
+extends "res://scripts/pixel/ground.gd"
 const Player = preload("res://scripts/pixel/player.gd")
 const HUD = preload("res://scripts/pixel/hud.gd")
+const Character = preload("res://scripts/pixel/character.gd")
+const Crows = preload("res://scripts/pixel/crows.gd")
+const SaveStore = preload("res://scripts/pixel/save_store.gd")
+const Settings = preload("res://scripts/pixel/settings.gd")
+const Story = preload("res://scripts/pixel/story.gd")
+const Director = preload("res://scripts/pixel/director.gd")
+const DeepSeekAdapter = preload("res://scripts/pixel/deepseek_adapter.gd")
+const Soundscape = preload("res://scripts/pixel/soundscape.gd")
 const InventoryModel = preload("res://scripts/items/Inventory.gd")
 const ItemData = preload("res://scripts/items/InventoryItemData.gd")
-const WATER_RECT := Rect2(613, 385, 164, 76)
 var inventory = InventoryModel.new(8)
-var player: CharacterBody2D
-var hud: Control
-var actors: Node2D
+var player
+var hud
 var camera: Camera2D
 var atmosphere: ShaderMaterial
 var pickups: Array[Node2D] = []
 var nearest_pickup: Node2D
 var items: Dictionary = {}
-var grass: Array[Vector2] = []
-var stones: Array[Rect2] = []
-var lights: Array[Vector2] = []
 var elapsed := 0.0
+var fog_clock := 0.0
+var settings
+var sounds
+var saves = SaveStore.new()
+var session: Dictionary = {}
+var story = Story.new()
+var director = Director.new()
+var mode := "menu"
+var slot_id := 0
+var characters: Dictionary = {}
+var graves: Array[Node2D] = []
+var nearest_grave := 0
+var nearest_actor := ""
+var crows
+var region := "deer"
+var autosave_timer := 0.0
+var ritual_timer := 0.0
+var ritual_actor := ""
+var actions: Array = []
+var adapter
+var pending_story := false
+var dev_clicks := 0
+var dev_deadline := 0.0
+var dirty := false
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	settings = Settings.new()
+	add_child(settings)
+	sounds = Soundscape.new()
+	add_child(sounds)
+	adapter = DeepSeekAdapter.new()
+	add_child(adapter)
+	adapter.completed.connect(_story_suggestion)
+	session = saves.fresh()
+	story.bind(session.story)
 	_build_ground()
 	actors = Node2D.new()
 	actors.name = "DepthSorted"
@@ -29,173 +63,28 @@ func _ready() -> void:
 	add_child(actors)
 	_build_props()
 	_build_water()
+	if ResourceLoader.exists("res://art/characters/menu.png"):
+		menu_background = load("res://art/characters/menu.png")
 	player = Player.new()
-	player.position = Vector2(480, 341)
 	actors.add_child(player)
 	camera = Camera2D.new()
 	camera.name = "PixelCamera"
-	camera.position = player.position.round()
-	camera.limit_left = 100
-	camera.limit_right = 860
-	camera.limit_top = 100
-	camera.limit_bottom = 600
+	camera.position = Vector2(480,335)
 	add_child(camera)
 	_build_items()
-	spawn_pickup("feather", Vector2(504, 349), 3)
-	spawn_pickup("ember", Vector2(367, 294), 2)
-	spawn_pickup("key", Vector2(643, 325), 1)
-	spawn_pickup("feather", Vector2(281, 404), 5)
+	_build_characters()
 	_build_overlay()
+	crows = Crows.new()
+	crows.world = self
+	add_child(crows)
+	settings.changed.connect(_apply_settings)
+	inventory.inventory_changed.connect(func(_index): dirty = true)
 	inventory.inventory_full.connect(func(_item): hud.notify("行囊已满，先放下一些物品。"))
-	queue_redraw()
-
-func _build_ground() -> void:
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 1809
-	for i in range(2600):
-		grass.append(Vector2(rng.randi_range(105, 855), rng.randi_range(125, 585)))
-	for row in range(7):
-		for col in range(56):
-			var x := 92 + col * 14 + (row % 2) * 7
-			var y := 314 + row * 9
-			stones.append(Rect2(x + rng.randi_range(0, 2), y + rng.randi_range(0, 1), rng.randi_range(9, 13), 6))
-	for row in range(45):
-		for col in range(6):
-			stones.append(Rect2(442 + col * 13 + (row % 2) * 4, 169 + row * 9, 11, 7))
-
-func _draw() -> void:
-	draw_rect(Rect2(0, 0, 1000, 720), Color("15282e"))
-	draw_rect(Rect2(114, 138, 740, 447), Color("20383b"))
-	for p in grass:
-		var tint := Color("294247") if int(p.x) % 3 == 0 else Color("1a3036")
-		draw_rect(Rect2(p, Vector2(2, 1)), tint)
-		if int(p.x) % 7 == 0:
-			draw_line(p, p + Vector2(-1, -3), Color("36524e"))
-	draw_rect(Rect2(100, 310, 760, 74), Color("293a3c"))
-	draw_rect(Rect2(438, 150, 89, 444), Color("293a3c"))
-	for stone in stones:
-		var c := Color("415253") if int(stone.position.x) % 3 == 0 else Color("36484b")
-		draw_rect(stone, Color("182d33"))
-		draw_rect(Rect2(stone.position, stone.size - Vector2(0, 1)), c)
-	# Raised cemetery terraces: top plane, front edge, and narrow stone steps.
-	draw_rect(Rect2(224, 204, 169, 80), Color("10252d"))
-	draw_rect(Rect2(224, 199, 169, 77), Color("34494b"))
-	for i in range(8):
-		draw_line(Vector2(224 + i * 23, 200), Vector2(224 + i * 23, 276), Color("263d40"))
-	for i in range(3):
-		draw_rect(Rect2(298, 276 + i * 4, 30, 3), Color("56615a"))
-	# Old boundary wall and its vertical front face.
-	for i in range(35):
-		var x := 117 + i * 21
-		if x > 430 and x < 529:
-			continue
-		draw_rect(Rect2(x, 164, 20, 27), Color("172a32"))
-		draw_rect(Rect2(x, 159, 20, 6), Color("526362"))
-		draw_rect(Rect2(x + 1, 169, 18, 5), Color("30454b"))
-		draw_line(Vector2(x, 181), Vector2(x + 20, 181), Color("31484c"))
-	for x in [418, 536]:
-		draw_rect(Rect2(x, 129, 15, 67), Color("172a32"))
-		draw_rect(Rect2(x - 3, 126, 21, 7), Color("69726a"))
-		draw_rect(Rect2(x + 3, 137, 9, 52), Color("344b4e"))
-	# Pond rim. Its animated surface is a shader-driven Polygon2D.
-	draw_rect(WATER_RECT.grow(5), Color("10252b"))
-	draw_rect(Rect2(608, 382, 174, 3), Color("53605a"))
-	for light in lights:
-		for i in range(5, 0, -1):
-			draw_set_transform(light, 0, Vector2(1, 0.48))
-			draw_circle(Vector2.ZERO, i * 12, Color(0.85, 0.59, 0.24, 0.018))
-		draw_set_transform(Vector2.ZERO)
-	# Broken flagstones and reeds around the water.
-	for i in range(14):
-		var x := 615 + i * 12
-		draw_rect(Rect2(x, 466 + (i % 3), 8, 2), Color("3d5554"))
-
-func _prop(frame: int, pos: Vector2, cell_size: float, collision_size: Vector2) -> void:
-	var body := StaticBody2D.new()
-	body.position = pos
-	body.name = "Prop_%d_%d" % [frame, actors.get_child_count()]
-	actors.add_child(body)
-	var shadow := Polygon2D.new()
-	shadow.polygon = PackedVector2Array([Vector2(-12, 0), Vector2(-7, -4), Vector2(9, -3), Vector2(15, 2), Vector2(4, 5), Vector2(-8, 3)])
-	shadow.color = Color(0.03, 0.055, 0.07, 0.5)
-	body.add_child(shadow)
-	body.add_child(Art.sprite(frame, cell_size))
-	if collision_size != Vector2.ZERO:
-		var collision := CollisionShape2D.new()
-		var shape := RectangleShape2D.new()
-		shape.size = collision_size
-		collision.shape = shape
-		collision.position.y = -2
-		body.add_child(collision)
-	if frame == 8:
-		lights.append(pos)
-		var light := PointLight2D.new()
-		var gradient := Gradient.new()
-		gradient.colors = PackedColorArray([Color(1, 1, 1, 0.65), Color(1, 1, 1, 0)])
-		var texture := GradientTexture2D.new()
-		texture.gradient = gradient
-		texture.width = 128
-		texture.height = 128
-		texture.fill = GradientTexture2D.FILL_RADIAL
-		texture.fill_from = Vector2(0.5, 0.5)
-		texture.fill_to = Vector2(1, 0.5)
-		light.texture = texture
-		light.color = Color("ffc77a")
-		light.energy = 0.55
-		light.position.y = -cell_size * 0.55
-		body.add_child(light)
-
-func _wall(rect: Rect2) -> void:
-	var body := StaticBody2D.new()
-	var collision := CollisionShape2D.new()
-	var shape := RectangleShape2D.new()
-	shape.size = rect.size
-	collision.shape = shape
-	body.position = rect.get_center()
-	body.add_child(collision)
-	add_child(body)
-
-func _build_props() -> void:
-	for pos in [Vector2(271, 239), Vector2(341, 247), Vector2(274, 274), Vector2(360, 269), Vector2(596, 260)]:
-		_prop(9, pos, 51, Vector2(18, 10))
-	for pos in [Vector2(216, 361), Vector2(404, 302), Vector2(550, 394), Vector2(716, 309)]:
-		_prop(8, pos, 91, Vector2(10, 9))
-	for pos in [Vector2(173, 270), Vector2(776, 235), Vector2(233, 490), Vector2(803, 490), Vector2(577, 171)]:
-		_prop(11, pos, 140, Vector2(19, 10))
-	for pos in [Vector2(609, 326), Vector2(634, 307), Vector2(369, 445)]:
-		_prop(10, pos, 43, Vector2(23, 17))
-	for pos in [Vector2(195, 298), Vector2(237, 208), Vector2(390, 255), Vector2(668, 210), Vector2(748, 399), Vector2(329, 471), Vector2(594, 468), Vector2(535, 501), Vector2(724, 475)]:
-		_prop(15, pos, 47, Vector2.ZERO)
-	_wall(Rect2(95, 120, 770, 16))
-	_wall(Rect2(95, 582, 770, 16))
-	_wall(Rect2(90, 120, 16, 478))
-	_wall(Rect2(854, 120, 16, 478))
-	_wall(Rect2(114, 164, 316, 27))
-	_wall(Rect2(530, 164, 324, 27))
-	_wall(WATER_RECT)
-
-func _build_water() -> void:
-	var water := Polygon2D.new()
-	water.name = "Water"
-	water.position = WATER_RECT.position
-	water.polygon = PackedVector2Array([Vector2.ZERO, Vector2(164, 0), Vector2(164, 76), Vector2(0, 76)])
-	# A tiny white texture gives Polygon2D normalized UV coordinates.
-	var image := Image.create(164, 76, false, Image.FORMAT_RGBA8)
-	image.fill(Color.WHITE)
-	water.texture = ImageTexture.create_from_image(image)
-	var material := ShaderMaterial.new()
-	material.shader = load("res://shaders/pixel_water.gdshader")
-	water.material = material
-	add_child(water)
-	move_child(water, 0)
+	get_tree().auto_accept_quit = false
+	enter_menu(false)
 
 func _build_items() -> void:
-	var definitions := [
-		["feather", "鸦羽", "冰冷的羽毛。\n有人刚刚经过这里。", 12, 20],
-		["ember", "余烬", "握在手里，还有微温。\n路灯似乎需要它。", 13, 10],
-		["key", "旧钥匙", "一把没有名字的钥匙。\n锁孔却还记得它。", 14, 1]
-	]
-	for row in definitions:
+	for row in [["feather","鸦羽","冰冷的羽毛。有人刚经过这里。",12,20],["ember","余烬","握在手里还有微温。路灯似乎需要它。",13,10],["key","旧钥匙","锁孔还记得它。",14,1]]:
 		var item = ItemData.new()
 		item.id = row[0]
 		item.item_name = row[1]
@@ -205,26 +94,20 @@ func _build_items() -> void:
 		item.stackable = row[4] > 1
 		items[item.id] = item
 
-func spawn_pickup(id: String, pos: Vector2, amount: int) -> Node2D:
-	var item = items[id]
-	var node := Node2D.new()
-	node.name = "Pickup_" + id
-	node.position = pos
-	node.set_meta("item", item)
-	node.set_meta("amount", amount)
-	var mark := Polygon2D.new()
-	mark.polygon = PackedVector2Array([Vector2(0, -3), Vector2(5, 0), Vector2(0, 3), Vector2(-5, 0)])
-	mark.color = Color("bd9256")
-	node.add_child(mark)
-	var sprite := Sprite2D.new()
-	sprite.name = "Icon"
-	sprite.texture = item.icon
-	sprite.scale = Vector2.ONE * 25.0 / sprite.texture.get_width()
-	sprite.position.y = -11
-	node.add_child(sprite)
-	actors.add_child(node)
-	pickups.append(node)
-	return node
+func _build_characters() -> void:
+	for id in Story.ACTORS:
+		var actor = Character.new()
+		actor.actor_id = id
+		actor.name = "Character_" + id
+		actors.add_child(actor)
+		characters[id] = actor
+	for i in range(3):
+		var grave = Character.new()
+		grave.actor_id = ["deer","horse","sheep"][i]
+		grave.position = Vector2(325+i*155,335-abs(i-1)*12)
+		actors.add_child(grave)
+		grave.set_state("tomb")
+		graves.append(grave)
 
 func _build_overlay() -> void:
 	var effects := CanvasLayer.new()
@@ -243,59 +126,420 @@ func _build_overlay() -> void:
 	ui.layer = 10
 	add_child(ui)
 	hud = HUD.new()
-	hud.name = "InventoryHUD"
+	hud.name = "GameHUD"
 	hud.world = self
 	ui.add_child(hud)
 
+func _clear_pickups() -> void:
+	for item in pickups:
+		item.queue_free()
+	pickups.clear()
+	nearest_pickup = null
+
+func enter_menu(save_first := true) -> void:
+	if save_first and mode == "game" and not save_game():
+		hud.notify("返回墓园前保存失败：" + saves.last_error)
+		return
+	_release_inputs()
+	mode = "menu"
+	slot_id = 0
+	saves.sandbox = false
+	session = saves.fresh()
+	story.bind(session.story)
+	region = "deer"
+	ritual_timer = 0
+	ritual_actor = ""
+	_clear_pickups()
+	inventory.clear()
+	player.position = Vector2(480,414)
+	_refresh_room()
+	hud.close_modal()
+	hud.notify("走近一座墓碑，开始或继续它记录的旅程。")
+
+func open_slot(id: int) -> void:
+	var data: Dictionary = saves.read_slot(id)
+	if data.is_empty():
+		if not saves.last_error.is_empty():
+			hud.notify(saves.last_error)
+			return
+		data = saves.fresh()
+		data.story.flags.mail_route = true
+	mode = "game"
+	slot_id = id
+	saves.sandbox = false
+	session = data
+	story.bind(session.story)
+	region = str(session.region) if Story.REGIONS.has(str(session.region)) else "deer"
+	inventory.clear()
+	for i in range(mini(8,session.inventory.size())):
+		var saved = session.inventory[i]
+		if saved is Dictionary and items.has(str(saved.get("id",""))):
+			var item = items[str(saved.id)]
+			var amount := clampi(int(saved.get("quantity",0)),0,int(item.slot_max))
+			if amount > 0:
+				inventory.slots[i] = InventoryModel.SlotData.new(item,amount)
+	_clear_pickups()
+	if not bool(session.world_initialized):
+		for j in range(5):
+			spawn_pickup("feather",Vector2(505,385),3,Story.ACTORS[j])
+			spawn_pickup("ember",Vector2(367,365),2,Story.ACTORS[j])
+			spawn_pickup("key",Vector2(640,345),1,Story.ACTORS[j])
+		session.world_initialized = true
+	else:
+		for row in session.pickups:
+			if row is Dictionary and items.has(str(row.get("id",""))) and row.get("position") is Array and row.position.size() == 2:
+				spawn_pickup(str(row.id),Vector2(float(row.position[0]),float(row.position[1])),clampi(int(row.get("amount",1)),1,999),str(row.get("region","deer")))
+	player.position = Vector2(clampf(float(session.position[0]),115,838),clampf(float(session.position[1]),200,565))
+	_refresh_room()
+	hud.close_modal()
+	dirty = true
+	save_game()
+	hud.notify("已读取墓碑 %d。靠近死者调查遗物。" % id)
+
+func enter_dev() -> void:
+	if mode == "game" and not save_game():
+		return
+	_release_inputs()
+	mode = "dev"
+	slot_id = 0
+	saves.sandbox = true
+	session = saves.fresh()
+	session.story.flags.mail_route = true
+	story.bind(session.story)
+	region = "deer"
+	_clear_pickups()
+	inventory.clear()
+	for id in items:
+		inventory.add_item(items[id],1)
+		spawn_pickup(id,Vector2(400+pickups.size()*38,390),3,region)
+	player.position = Vector2(480,425)
+	_refresh_room()
+	hud.close_modal()
+	hud.notify("测试房：动画、裁决、区域色板、分支和背包。此房间不会保存。")
+
+func click_dev() -> void:
+	if mode != "menu":
+		return
+	if elapsed > dev_deadline:
+		dev_clicks = 0
+	dev_clicks += 1
+	dev_deadline = elapsed + 2.0
+	hud.notify("DEV %d / 3" % dev_clicks)
+	if dev_clicks >= 3:
+		dev_clicks = 0
+		enter_dev()
+
+func _refresh_room() -> void:
+	cinematic_menu = mode == "menu"
+	for wall in blockers:
+		wall.collision_layer = 0 if mode == "menu" else 1
+	for prop in scenery:
+		prop.visible = mode != "menu"
+		prop.collision_layer = 0 if mode == "menu" else 1
+	if has_node("Water"):
+		get_node("Water").visible = mode != "menu"
+	for grave in graves:
+		grave.visible = mode == "menu"
+		grave.foot_body.collision_layer = 1 if mode == "menu" else 0
+	for i in range(Story.ACTORS.size()):
+		var id: String = Story.ACTORS[i]
+		var actor = characters[id]
+		actor.position = Vector2(245+i*116,315) if mode == "dev" else Vector2(493,288)
+		actor.visible = mode == "dev" or (mode == "game" and id == region)
+		actor.reduce_flashes = settings.values.reduce_flashes
+		var verdict: String = session.story.decisions.get(id,"")
+		actor.set_state("idle" if mode == "dev" else ("tomb" if verdict == "accepted" else "corpse"))
+		if verdict == "erased":
+			actor.visible = false
+	for pickup in pickups:
+		pickup.visible = mode != "menu" and (mode == "dev" or pickup.get_meta("region") == region)
+	if is_instance_valid(crows):
+		crows.target = Vector2(480,245) if mode == "menu" else Vector2(493,288)
+	_apply_settings()
+	queue_redraw()
+	if is_instance_valid(hud):
+		hud.rebuild_chrome()
+
+func travel(id: String) -> void:
+	if mode == "menu" or not Story.REGIONS.has(id) or ritual_timer > 0:
+		return
+	region = id
+	session.region = id
+	player.position = Vector2(480,383)
+	_release_inputs()
+	_refresh_room()
+	dirty = true
+	save_game()
+	hud.notify(Story.REGIONS[id].name + " · " + Story.NAMES[id] + "所在之处")
+
 func _process(delta: float) -> void:
 	elapsed += delta
-	camera.position = player.position.round()
-	atmosphere.set_shader_parameter("camera_origin", camera.get_screen_center_position() - Vector2(320, 180))
+	if mode == "menu":
+		player.position = player.position.clamp(Vector2(170,320),Vector2(795,545))
+	if not settings.values.reduce_motion:
+		fog_clock += delta
+	if mode == "game":
+		session.played_seconds += delta
+		autosave_timer += delta
+		if autosave_timer >= 12.0:
+			autosave_timer = 0
+			save_game()
+	if ritual_timer > 0:
+		ritual_timer = maxf(0.0,ritual_timer-delta)
+		if ritual_timer == 0:
+			_refresh_room()
+			player.investigating = false
+			player.input_locked = hud.modal_open()
+			save_game()
+	var fixed := mode != "game" or bool(settings.values.reduce_motion)
+	camera.zoom = Vector2.ONE if fixed else Vector2(1.2,1.2)
+	camera.position = Vector2(480,335) if fixed else Vector2(clampf(player.position.x,450,510),clampf(player.position.y,315,370)).round()
+	var palette: Dictionary = Story.REGIONS[region]
+	var erased := float(session.story.erased)
+	var distortion := float(session.story.distortion)
+	var target_fog: Color = palette.fog.lerp(Color("d8d7cf"),clampf(erased/5.0,0.0,1.0)*0.75)
+	var fog_now = atmosphere.get_shader_parameter("fog_color")
+	atmosphere.set_shader_parameter("fog_color",Color(fog_now).lerp(target_fog,minf(1,delta*0.8)) if fog_now != null else target_fog)
+	atmosphere.set_shader_parameter("fog_strength",0.16+distortion*0.018)
+	atmosphere.set_shader_parameter("motion_clock",fog_clock)
+	get_node("Water").material.set_shader_parameter("motion_clock",fog_clock)
+	atmosphere.set_shader_parameter("gentle",settings.values.reduce_flashes)
+	atmosphere.set_shader_parameter("ritual",sin((1.0-ritual_timer/3.2)*PI) if ritual_timer>0 else 0.0)
+	atmosphere.set_shader_parameter("viewport_size",get_viewport_rect().size)
+	atmosphere.set_shader_parameter("camera_origin",camera.position-get_viewport_rect().size/2)
+	ground_color = ground_color.lerp(palette.ground,minf(1,delta*0.8))
 	nearest_pickup = null
-	var nearest_distance := 29.0
+	nearest_actor = ""
+	nearest_grave = 0
+	var closest := 34.0
 	for pickup in pickups:
-		var distance := player.position.distance_to(pickup.position)
-		pickup.get_node("Icon").position.y = -11 + roundf(sin(elapsed * 2.5 + pickup.position.x) * 2.0)
-		if distance < nearest_distance:
-			nearest_distance = distance
+		if not pickup.visible:
+			continue
+		pickup.get_node("Icon").position.y = -11 if settings.values.reduce_motion else -11+sin(elapsed*2)*1.5
+		var distance: float = player.position.distance_to(pickup.position)
+		if distance < closest:
+			closest = distance
 			nearest_pickup = pickup
+	if mode == "menu":
+		for i in range(graves.size()):
+			if player.position.distance_to(graves[i].position) < 62:
+				nearest_grave = i+1
+	else:
+		closest = 66.0
+		for id in characters:
+			var actor = characters[id]
+			if actor.visible and player.position.distance_to(actor.position) < closest:
+				closest = player.position.distance_to(actor.position)
+				nearest_actor = id
+	queue_redraw()
+
+func _draw() -> void:
+	super._draw()
+	if mode == "game":
+		# These props are causal evidence: they disappear only when their owner is erased.
+		if bool(session.story.flags.get("mail_route",true)):
+			draw_rect(Rect2(688,265,14,24),Color("345263"))
+			draw_rect(Rect2(686,260,18,9),Color("a88357"))
+		if bool(session.story.flags.get("market_open",true)):
+			draw_rect(Rect2(312,390,38,10),Color("794a4d"))
+		if bool(session.story.flags.get("bell_remembered",true)):
+			draw_circle(Vector2(570,252),5,Color("bdad7d"))
+
+func spawn_pickup(id: String, pos: Vector2, amount: int, area := "") -> Node2D:
+	if not items.has(id):
+		return null
+	var node := Node2D.new()
+	node.position = pos
+	node.set_meta("item",items[id])
+	node.set_meta("amount",amount)
+	node.set_meta("region",region if area.is_empty() else area)
+	var sprite := Sprite2D.new()
+	sprite.name = "Icon"
+	sprite.texture = items[id].icon
+	sprite.scale = Vector2.ONE*25.0/sprite.texture.get_width()
+	sprite.position.y = -11
+	node.add_child(sprite)
+	actors.add_child(node)
+	pickups.append(node)
+	return node
+
+func interact() -> void:
+	if hud.modal_open() or ritual_timer>0:
+		return
+	if mode == "menu":
+		if nearest_grave>0:
+			hud.show_grave(nearest_grave)
+		else:
+			hud.notify("走近一座墓碑，按 E 或调查键。")
+	elif not nearest_actor.is_empty():
+		hud.show_character(nearest_actor)
+	elif is_instance_valid(nearest_pickup):
+		collect_nearest()
+	else:
+		hud.notify("走近遗物或死者，再调查。")
 
 func collect_nearest() -> void:
 	if not is_instance_valid(nearest_pickup):
-		hud.notify("靠近闪光的遗物，再按 E 拾取。")
 		return
 	var item = nearest_pickup.get_meta("item")
 	var quantity: int = nearest_pickup.get_meta("amount")
-	var added: int = inventory.add_item(item, quantity)
-	if added > 0:
-		hud.notify("拾取 %s × %d" % [item.item_name, added])
-	if added == quantity:
+	var added: int = inventory.add_item(item,quantity)
+	if added>0:
+		hud.notify("拾取 %s × %d" % [item.item_name,added])
+		sounds.chime()
+	if added==quantity:
 		pickups.erase(nearest_pickup)
 		nearest_pickup.queue_free()
-		nearest_pickup = null
+		nearest_pickup=null
 	else:
-		nearest_pickup.set_meta("amount", quantity - added)
+		nearest_pickup.set_meta("amount",quantity-added)
+	actions.append("拾取"+item.id)
+	dirty = true
+	save_game()
 
 func drop_selected() -> void:
 	var slot = inventory.get_slot(hud.selected)
-	if slot.is_empty():
+	if slot.is_empty() or mode == "menu":
 		return
 	var item = slot.item
-	# Feet position is guaranteed walkable, so drops never land inside the pond/walls.
-	if inventory.remove_item(hud.selected, 1) == 1:
-		spawn_pickup(item.id, player.position, 1)
-		hud.notify("放下了 " + item.item_name)
+	if inventory.remove_item(hud.selected,1)==1:
+		spawn_pickup(item.id,player.position,1)
+		hud.notify("放下了"+item.item_name)
+	dirty = true
+	save_game()
+
+func judge(id: String, erase: bool) -> void:
+	if mode == "menu" or ritual_timer>0 or not story.judge(id,erase):
+		return
+	hud.close_modal()
+	actions.append(("抹去" if erase else "顺应死亡")+id)
+	if erase:
+		ritual_actor=id
+		ritual_timer=3.2
+		characters[id].erase()
+		player.input_locked=true
+		player.investigating=true
+	else:
+		characters[id].set_state("tomb")
+	sounds.chime()
+	dirty=true
+	# Decision is durable immediately, even if the application suspends mid-ritual.
+	save_game()
+	hud.notify("因果已改变。打开手记查看后续。" if erase else "死亡成为定局，名字被留下。")
+
+func advance_story(simulated: Variant = null) -> bool:
+	var target: String = director.choose(story,actions,simulated)
+	if target.is_empty():
+		return false
+	if not story.advance(target):
+		return false
+	dirty=true
+	save_game()
+	return true
+
+func request_story_step() -> void:
+	if pending_story:
+		return
+	if not adapter.enabled:
+		advance_story()
+		hud.show_journal()
+		return
+	var context: Dictionary = director.context(story,actions)
+	context.slot_id = slot_id
+	context.mode = mode
+	pending_story = true
+	adapter.request_judgment(context,director.request_body(context,adapter.model))
+
+func _story_suggestion(context: Dictionary, suggestion: Variant) -> void:
+	pending_story = false
+	if context.get("node") != session.story.node or context.get("slot_id") != slot_id or context.get("mode") != mode:
+		return
+	# Recheck eligibility at response time; never let delayed replies rewrite newer state.
+	var allowed: Array = story.available()
+	if allowed.is_empty():
+		return
+	var target := str(allowed[0])
+	if suggestion is Dictionary and suggestion.get("node") in allowed and int(suggestion.get("request_id",-1)) == int(context.get("request_id",-2)):
+		target = suggestion.node
+	if story.advance(target):
+		save_game()
+		if hud.modal_kind == "journal":
+			hud.show_journal()
+
+func snapshot() -> Dictionary:
+	var data := session.duplicate(true)
+	data.position=[player.position.x,player.position.y]
+	data.region=region
+	data.inventory=[]
+	for slot in inventory.slots:
+		data.inventory.append({} if slot.is_empty() else {"id":slot.item.id,"quantity":slot.quantity})
+	data.pickups=[]
+	for pickup in pickups:
+		data.pickups.append({"id":pickup.get_meta("item").id,"amount":pickup.get_meta("amount"),"region":pickup.get_meta("region"),"position":[pickup.position.x,pickup.position.y]})
+	return data
+
+func save_game() -> bool:
+	if mode!="game" or saves.sandbox or slot_id==0:
+		return false
+	var data := snapshot()
+	if saves.write_slot(slot_id,data):
+		session.saved_at=data.saved_at
+		dirty=false
+		return true
+	if is_instance_valid(hud):
+		hud.notify("保存失败："+saves.last_error)
+	return false
+
+func _apply_settings() -> void:
+	if is_instance_valid(hud):
+		hud.apply_settings()
+	for actor in characters.values():
+		actor.reduce_flashes=settings.values.reduce_flashes
+
+func _release_inputs() -> void:
+	if is_instance_valid(adapter):
+		adapter.cancel()
+	pending_story = false
+	player.touch_direction=Vector2.ZERO
+	player.touch_run=false
+	player.velocity=Vector2.ZERO
+	player.input_locked=false
+	player.investigating=false
+	if is_instance_valid(hud):
+		hud.release_touch()
+
+func _notification(what: int) -> void:
+	if what in [NOTIFICATION_APPLICATION_PAUSED,NOTIFICATION_APPLICATION_FOCUS_OUT]:
+		if is_instance_valid(player):
+			_release_inputs()
+			player.input_locked = hud.modal_open() or ritual_timer>0
+			if mode=="game":
+				save_game()
+	if what==NOTIFICATION_WM_CLOSE_REQUEST:
+		if mode=="game" and not save_game():
+			return
+		get_tree().quit()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		var key: int = event.physical_keycode if event.physical_keycode != 0 else event.keycode
-		if key in [KEY_I, KEY_TAB]:
-			hud.toggle()
-		elif key == KEY_ESCAPE and hud.opened:
-			hud.toggle()
-		elif key == KEY_E and not hud.opened:
-			collect_nearest()
-		elif key == KEY_Q:
-			drop_selected()
-		elif key >= KEY_1 and key <= KEY_8:
-			hud.selected = key - KEY_1
+		var key: int = event.physical_keycode if event.physical_keycode else event.keycode
+		match key:
+			KEY_ESCAPE:
+				if hud.modal_open():
+					hud.close_modal()
+				else:
+					hud.show_settings()
+			KEY_E: interact()
+			KEY_I,KEY_TAB:
+				if mode!="menu" and ritual_timer<=0:
+					hud.toggle()
+			KEY_J:
+				if mode!="menu":
+					hud.show_journal()
+			KEY_Q:
+				if not hud.modal_open() or hud.opened:
+					drop_selected()
+		if key>=KEY_1 and key<=KEY_8:
+			hud.selected=key-KEY_1
+			if hud.opened:
+				hud.show_inventory()
