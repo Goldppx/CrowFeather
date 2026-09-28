@@ -36,7 +36,10 @@ func _init(p_max_slots: int = DEFAULT_MAX_SLOTS):
 		slots.append(SlotData.new(null, 0))
 
 func add_item(item_data: InventoryItemData, amount: int = 1) -> int:
+	if item_data == null or amount <= 0:
+		return 0
 	var remaining = amount
+	var limit := maxi(1, item_data.slot_max) if item_data.stackable else 1
 	
 	if item_data.stackable:
 		for i in range(max_slots):
@@ -45,8 +48,8 @@ func add_item(item_data: InventoryItemData, amount: int = 1) -> int:
 			var slot = slots[i]
 			if slot.is_empty():
 				continue
-			if slot.item.id == item_data.id and slot.quantity < slot.item.slot_max:
-				var space = slot.item.slot_max - slot.quantity
+			if slot.item.id == item_data.id and slot.quantity < limit:
+				var space = limit - slot.quantity
 				var to_add = mini(remaining, space)
 				slot.quantity += to_add
 				remaining -= to_add
@@ -57,7 +60,7 @@ func add_item(item_data: InventoryItemData, amount: int = 1) -> int:
 			break
 		var slot = slots[i]
 		if slot.is_empty():
-			var to_add = mini(remaining, item_data.slot_max)
+			var to_add = mini(remaining, limit)
 			slots[i] = SlotData.new(item_data, to_add)
 			remaining -= to_add
 			inventory_changed.emit(i)
@@ -68,6 +71,8 @@ func add_item(item_data: InventoryItemData, amount: int = 1) -> int:
 	return amount - remaining
 
 func remove_item(slot_index: int, amount: int = 1) -> int:
+	if amount <= 0:
+		return 0
 	if slot_index < 0 or slot_index >= max_slots:
 		return 0
 	var slot = slots[slot_index]

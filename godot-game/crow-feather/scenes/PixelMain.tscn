@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b8pfn241uc1l8"]
+
+[ext_resource type="Script" uid="uid://cqn3mcgo268th" path="res://scripts/pixel/world.gd" id="1_vm0gw"]
+
+[node name="PixelMain" type="Node2D" unique_id=1411815580]
+script = ExtResource("1_vm0gw")
